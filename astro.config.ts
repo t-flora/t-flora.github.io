@@ -6,6 +6,8 @@ import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
 import fs from "fs";
 import rehypeExternalLinks from "rehype-external-links";
+import rehypeMathjax from "rehype-katex";
+import remarkMath from "remark-math";
 import remarkUnwrapImages from "remark-unwrap-images";
 
 import { expressiveCodeOptions } from "./src/site.config";
@@ -23,10 +25,14 @@ export default defineConfig({
 			applyBaseStyles: false,
 		}),
 		sitemap(),
-		mdx(),
+		mdx({
+			rehypePlugins: [rehypeMathjax],
+			remarkPlugins: [remarkMath]
+		}),
 	],
 	markdown: {
 		rehypePlugins: [
+			rehypeMathjax,
 			[
 				rehypeExternalLinks,
 				{
@@ -35,7 +41,7 @@ export default defineConfig({
 				},
 			],
 		],
-		remarkPlugins: [remarkUnwrapImages, remarkReadingTime],
+		remarkPlugins: [remarkUnwrapImages, remarkReadingTime, remarkMath],
 		remarkRehype: {
 			footnoteLabelProperties: {
 				className: [""],
