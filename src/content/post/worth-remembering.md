@@ -2,7 +2,7 @@
 title: "What's worth remembering?"
 description: "Exploring what you should do with a tool as powerful and demanding as SR."
 publishDate: "21 June 2024"
-tags: ["opinion", "learning"]
+tags: ["opinion", "learning", "essay"]
 draft: true
 ---
 

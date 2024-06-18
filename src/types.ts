@@ -4,7 +4,7 @@ export interface SiteConfig {
 		locale: string | string[] | undefined;
 		options: Intl.DateTimeFormatOptions;
 	};
-	description: string;
+	description?: string;
 	lang: string;
 	ogLocale: string;
 	sortPostsByUpdatedDate: boolean;
