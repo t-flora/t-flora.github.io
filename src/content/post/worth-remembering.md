@@ -19,7 +19,7 @@ What about discovery?
     - Having novel realizations or insights
     - Novel realizations can be combinations of existing ideas (e.g. genetic algorithms) or the discovery of entirely new mechanisms (e.g. evolution)
 - Discovery might depend on a nonlinear combination of recalled information coupled with new information
-
+    
 Possible topics to discuss:
 - Heuristics for estimating expected value of committing a piece of information to memory
 - What types of information will you forget but have expected value ($>0$)
@@ -28,8 +28,8 @@ Possible topics to discuss:
     - This also works well with a corpus of knowledge - getting familiarized with a whole subject for a second time is quite frustrating if you need to recall from the basics
 - Take a knowledge-graph view of what you know to estimate the returns to remembering something
     - How? If the node is central, you'll likely reuse many times anyway - if the node is a leaf, it may not be justified in the amount of time it takes to remember
-    - What about impact? What's the value of memorizing a particular PyTorch method that you'll use again and again and again? It's should be a leaf in terms of dependencies, but not in terms of impact, since many *uses* of that method will be made to achieve different goals
+    - What about impact? What's the value of memorizing a particular PyTorch method that you'll use again and again and again? It should be a leaf in terms of dependencies, but not in terms of impact, since many *uses* of that method will be made to achieve different goals
 - It seems like you can mostly separate recall value for goal achievement and for discovery
     - Discovery might be your goal, but that doesn't make its ideal use of memory the same as, say, becoming good at building applications
 
-## Memory systems are demanding
+- Memory systems are demanding

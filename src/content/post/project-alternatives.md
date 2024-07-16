@@ -31,10 +31,14 @@ The choice
     - If you have multiple problem domains under consideration, consider mapping out their intersection. A project in that intersection would likely be more fun for you *and* provide more value to the world, since projects leveraging 2 or more disparate skillsets are much rarer.
     - Example: Do you want to learn more about ML infrastructure, which is mostly in Python/C++/CUDA, but also want to learn Rust? You could port a tool that exists in the traditional ML ecosystem to Rust.
     - Example 2: Do you want to learn about robotics and about AI engineering? Program a simple robot to take simple actions based on language input.
+    - Obvious difficulty: it can take at least 2x the time to learn all the required concepts to pursue a project in 2 domains
+        - Most of the time this constraint shouldn't be an issue, unless the project is too broad in scope or ambitious in deliverables
 
 The process
 - Don't use a complete (end-to-end) reference example for your projects - you may use the final result as a reference, but not the whole process.
     - Any individual process you may want to learn about can be treated as the final result of a particular learning project.
     - Particular solutions to finnicky problems can be fine, but ideally you arrived at the problem yourself, instead of being shown it exists.
+- Have a clear mental model of what you're building
+    - The mental model can change - it just helps if it is explicit and if so are the changes
 - How to prevent boredom? Convince yourself that you care
     - Presumably you started the side project because you believed there was value to be gained from executing and maybe even finishing it.
