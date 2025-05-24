@@ -16,7 +16,7 @@ const { title } = meta;
 	emailjs.init("IukdSiMfqY459eWNZ"); // Replace with your actual public key
 
 	document.addEventListener('DOMContentLoaded', function() {
-		const form = document.getElementById('contact-form');
+		const form = document.getElementById('contact-form') as HTMLFormElement;
 		const submitButton = form?.querySelector('button[type="submit"]');
 		const originalButtonText = submitButton?.textContent;
 
@@ -26,7 +26,10 @@ const { title } = meta;
 			if (!submitButton || !originalButtonText) return;
 
 			// Update button state
-			submitButton.disabled = true;
+      if ( submitButton instanceof HTMLButtonElement )
+      {
+        submitButton.disabled = true;
+      }
 			submitButton.textContent = 'Sending...';
 
 			try {
