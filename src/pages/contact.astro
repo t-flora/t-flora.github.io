@@ -9,35 +9,67 @@ const meta = {
 const { title } = meta;
 ---
 
+<script>
+	import emailjs from '@emailjs/browser';
+
+	// Initialize EmailJS with your public key
+	emailjs.init("IukdSiMfqY459eWNZ"); // Replace with your actual public key
+
+	document.addEventListener('DOMContentLoaded', function() {
+		const form = document.getElementById('contact-form');
+		const submitButton = form?.querySelector('button[type="submit"]');
+		const originalButtonText = submitButton?.textContent;
+
+		form?.addEventListener('submit', async function(e) {
+			e.preventDefault();
+
+			if (!submitButton || !originalButtonText) return;
+
+			// Update button state
+			submitButton.disabled = true;
+			submitButton.textContent = 'Sending...';
+
+			try {
+				const result = await emailjs.sendForm(
+					'service_82mx42m',    // Replace with your Gmail service ID
+					'template_cr2ddja',   // Replace with your template ID
+					form
+				);
+
+				console.log('Email sent successfully:', result);
+
+				// Redirect to success page
+				window.location.href = '/contact-success/';
+
+			} catch (error) {
+				console.error('Error sending email:', error);
+				alert('Failed to send message. Please try again.');
+
+				// Reset button state
+				submitButton.disabled = false;
+				submitButton.textContent = originalButtonText;
+			}
+		});
+	});
+</script>
+
 <Base meta={meta}>
 	<div class="space-y-16">
 		<header class="text-center">
 			<h1 class="title">{title}</h1>
 		</header>
-		
+
 		<div class="max-w-2xl mx-auto">
 			<div class="prose prose-cactus">
 				<p>I'd love to hear from you! Whether you have questions, feedback, or just want to say hi, feel free to reach out.</p>
 			</div>
-			
-			<form 
-				name="contact" 
-				method="POST" 
-				data-netlify="true" 
-				data-netlify-honeypot="bot-field"
-				action="/contact-success/"
+
+			<form
+				id="contact-form"
+				name="contact"
 				class="mt-8 space-y-6"
 			>
-				<input type="hidden" name="form-name" value="contact" />
-				
-				<!-- Honeypot field for spam protection -->
-				<div class="hidden">
-					<label>
-						Don't fill this out if you're human: 
-						<input name="bot-field" />
-					</label>
-				</div>
-				
+
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<div>
 						<label for="name" class="block text-sm font-medium text-textColor mb-2">
@@ -52,7 +84,7 @@ const { title } = meta;
 							placeholder="Your name"
 						/>
 					</div>
-					
+
 					<div>
 						<label for="email" class="block text-sm font-medium text-textColor mb-2">
 							Email *
@@ -67,7 +99,7 @@ const { title } = meta;
 						/>
 					</div>
 				</div>
-				
+
 				<div>
 					<label for="subject" class="block text-sm font-medium text-textColor mb-2">
 						Subject *
@@ -81,7 +113,7 @@ const { title } = meta;
 						placeholder="What's this about?"
 					/>
 				</div>
-				
+
 				<div>
 					<label for="message" class="block text-sm font-medium text-textColor mb-2">
 						Message *
@@ -95,7 +127,7 @@ const { title } = meta;
 						placeholder="Your message..."
 					></textarea>
 				</div>
-				
+
 				<div class="pt-4">
 					<button
 						type="submit"
@@ -105,10 +137,10 @@ const { title } = meta;
 					</button>
 				</div>
 			</form>
-			
+
 			<div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
 				<div class="prose prose-cactus text-sm">
-					<p>This form is secured by Netlify and includes spam protection. Your information will be sent directly to me and is not stored or shared with third parties.</p>
+					<p>This form is secured by EmailJS. Your information will be sent directly to me and is not stored or shared with third parties.</p>
 				</div>
 			</div>
 		</div>
