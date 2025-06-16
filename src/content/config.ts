@@ -24,7 +24,7 @@ const post = defineCollection({
 				.or(z.date())
 				.transform((val) => new Date(val)),
 			tags: z.array(z.string()).default([]).transform(removeDupsAndLowerCase),
-			title: z.string().max(60),
+			title: z.string().max(200), // set max title value to 200 chars
 			updatedDate: z
 				.string()
 				.optional()
