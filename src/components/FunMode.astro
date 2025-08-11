@@ -56,6 +56,7 @@
 		private isActive: boolean = false;
 		private particles: Particle[] = [];
 		private animationId: number | null = null;
+		private readonly STORAGE_KEY = 'funMode';
 
 		constructor() {
 			this.canvas = document.getElementById('fireworks-canvas') as HTMLCanvasElement;
@@ -64,6 +65,7 @@
 			
 			this.setupCanvas();
 			this.bindEvents();
+			this.loadFunModeState();
 		}
 
 		private setupCanvas() {
@@ -83,6 +85,11 @@
 
 		private toggleFunMode() {
 			this.isActive = !this.isActive;
+			this.saveFunModeState();
+			this.updateFunModeUI();
+		}
+
+		private updateFunModeUI() {
 			this.toggle.classList.toggle('active', this.isActive);
 			
 			if (this.isActive) {
@@ -93,6 +100,26 @@
 				this.stopAnimation();
 				this.particles = [];
 				this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+			}
+		}
+
+		private loadFunModeState() {
+			try {
+				const savedState = localStorage.getItem(this.STORAGE_KEY);
+				if (savedState !== null) {
+					this.isActive = JSON.parse(savedState);
+					this.updateFunModeUI();
+				}
+			} catch (error) {
+				console.warn('Failed to load fun mode state:', error);
+			}
+		}
+
+		private saveFunModeState() {
+			try {
+				localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.isActive));
+			} catch (error) {
+				console.warn('Failed to save fun mode state:', error);
 			}
 		}
 
