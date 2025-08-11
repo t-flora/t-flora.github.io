@@ -6,6 +6,7 @@ import SkipLink from "@/components/SkipLink.astro";
 import ThemeProvider from "@/components/ThemeProvider.astro";
 import Footer from "@/components/layout/Footer.astro";
 import Header from "@/components/layout/Header.astro";
+import FunMode from "@/components/FunMode.astro";
 import { siteConfig } from "@/site-config";
 
 interface Props {
@@ -35,5 +36,6 @@ const {
 			<slot />
 		</main>
 		<Footer />
+		<FunMode />
 	</body>
 </html>
