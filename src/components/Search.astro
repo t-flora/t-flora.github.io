@@ -4,41 +4,18 @@
 import "@pagefind/default-ui/css/ui.css";
 ---
 
-<site-search class="ms-auto" id="search">
-	<button
-		class="flex h-9 w-9 items-center justify-center rounded-md ring-zinc-400 transition-all hover:ring-2"
-		data-open-modal
-		disabled
-	>
-		<svg
-			aria-label="search"
-			class="h-7 w-7"
-			fill="none"
-			height="16"
-			stroke="currentColor"
-			stroke-linecap="round"
-			stroke-linejoin="round"
-			stroke-width="1.5"
-			viewBox="0 0 24 24"
-			width="16"
-			xmlns="http://www.w3.org/2000/svg"
-		>
-			<path d="M0 0h24v24H0z" stroke="none"></path>
+<site-search id="search">
+	<button aria-label="Search" class="icon-button" data-open-modal disabled>
+		<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
 			<path d="M3 10a7 7 0 1 0 14 0 7 7 0 1 0-14 0M21 21l-6-6"></path>
 		</svg>
 	</button>
-	<dialog
-		aria-label="search"
-		class="h-full max-h-full w-full max-w-full border border-zinc-400 bg-bgColor shadow backdrop:backdrop-blur sm:mx-auto sm:mb-auto sm:mt-16 sm:h-max sm:max-h-[calc(100%-8rem)] sm:min-h-[15rem] sm:w-5/6 sm:max-w-[48rem] sm:rounded-md"
-	>
-		<div class="dialog-frame flex flex-col gap-4 p-6 pt-12 sm:pt-6">
-			<button
-				class="ms-auto cursor-pointer rounded-md bg-zinc-200 p-2 font-semibold dark:bg-zinc-700"
-				data-close-modal>Close</button
-			>
+	<dialog aria-label="Search">
+		<div class="dialog-frame">
+			<button class="close" data-close-modal>Close</button>
 			{
 				import.meta.env.DEV ? (
-					<div class="mx-auto text-center">
+					<div class="muted">
 						<p>
 							Search is only available in production builds. <br />
 							Try building and previewing the site to test it out locally.
@@ -135,70 +112,62 @@ import "@pagefind/default-ui/css/ui.css";
 </script>
 
 <style is:global>
-	:root {
+	#cactus__search {
 		--pagefind-ui-font: inherit;
-	}
-
-	#cactus__search .pagefind-ui__search-clear {
-		width: calc(60px * var(--pagefind-ui-scale));
-		padding: 0;
-		background-color: transparent;
-		overflow: hidden;
-	}
-	#cactus__search .pagefind-ui__search-clear:focus {
-		outline: 1px solid theme("colors.accent-2");
-	}
-	#cactus__search .pagefind-ui__search-clear::before {
-		content: "";
-		-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M6 18L18 6M6 6l12 12'%3E%3C/path%3E%3C/svg%3E")
-			center / 60% no-repeat;
-		mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M6 18L18 6M6 6l12 12'%3E%3C/path%3E%3C/svg%3E")
-			center / 60% no-repeat;
-		background-color: theme("colors.accent");
-		display: block;
-		width: 100%;
-		height: 100%;
+		--pagefind-ui-primary: var(--accent);
+		--pagefind-ui-text: var(--text);
+		--pagefind-ui-background: var(--bg);
+		--pagefind-ui-border: var(--rule);
+		--pagefind-ui-tag: var(--bg-raised);
+		--pagefind-ui-border-width: 1px;
+		--pagefind-ui-border-radius: 4px;
 	}
 
 	#cactus__search .pagefind-ui__result {
 		border: 0;
 	}
 
-	#cactus__search .pagefind-ui__result-link {
-		background-size: 100% 6px;
-		background-position: bottom;
-		background-repeat: repeat-x;
-		background-image: linear-gradient(
-			transparent,
-			transparent 5px,
-			theme("colors.textColor") 5px,
-			theme("colors.textColor")
-		);
-	}
-
-	#cactus__search .pagefind-ui__result-link:hover {
-		text-decoration: none;
-		background-image: linear-gradient(
-			transparent,
-			transparent 4px,
-			theme("colors.link") 4px,
-			theme("colors.link")
-		);
-	}
-
 	#cactus__search mark {
-		color: theme("colors.quote");
+		color: var(--accent);
 		background-color: transparent;
 		font-weight: 600;
 	}
 </style>
 
 <style>
-	#cactus__search {
-		--pagefind-ui-primary: theme("colors.accent");
-		--pagefind-ui-text: theme("colors.textColor");
-		--pagefind-ui-background: theme("colors.bgColor");
-		--pagefind-ui-border: theme("colors.zinc.400");
-		--pagefind-ui-border-width: 1px;
+	dialog {
+		width: min(40rem, calc(100vw - 2rem));
+		max-height: calc(100vh - 8rem);
+		margin: 4rem auto auto;
+		padding: 0;
+		border: 1px solid var(--rule);
+		border-radius: 4px;
+		background: var(--bg);
+		color: var(--text);
+		box-shadow: var(--shadow);
+	}
+
+	dialog::backdrop {
+		background: rgb(0 0 0 / 0.25);
+		backdrop-filter: blur(2px);
+	}
+
+	.dialog-frame {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		padding: 1.25rem;
+	}
+
+	.close {
+		align-self: flex-end;
+		padding: 0.25rem 0.6rem;
+		border: 1px solid var(--rule);
+		border-radius: 4px;
+		background: var(--bg-raised);
+		color: var(--text);
+		font: inherit;
+		font-size: 0.85rem;
+		cursor: pointer;
 	}
 </style>

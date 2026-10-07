@@ -1,0 +1,45 @@
+---
+import fs from "node:fs";
+
+import ProjectList from "@/components/hubs/ProjectList.astro";
+import Timeline from "@/components/hubs/Timeline.astro";
+import { getProjects, getTimeline } from "@/data/hubs";
+import PageLayout from "@/layouts/Base.astro";
+
+// The resume is only linked once a PDF has been placed at public/resume.pdf.
+const hasResume = fs.existsSync("public/resume.pdf");
+const projects = await getProjects();
+const timeline = await getTimeline();
+
+const meta = {
+	description: "Tiago Flora's work, education and projects.",
+	title: "Work",
+};
+---
+
+<PageLayout meta={meta}>
+	<h1 class="page-title">Work</h1>
+	{
+		hasResume && (
+			<p class="resume">
+				<a href="/resume.pdf">Resume (PDF)</a>
+			</p>
+		)
+	}
+
+	<section>
+		<h2 class="section-title">Timeline</h2>
+		<Timeline entries={timeline} />
+	</section>
+
+	<section>
+		<h2 class="section-title">Projects</h2>
+		<ProjectList projects={projects} />
+	</section>
+</PageLayout>
+
+<style>
+	.resume {
+		margin: -1rem 0 0;
+	}
+</style>

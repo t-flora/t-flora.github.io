@@ -1,0 +1,24 @@
+---
+import ProjectList from "@/components/hubs/ProjectList.astro";
+import { getProjects } from "@/data/hubs";
+import PageLayout from "@/layouts/Base.astro";
+
+const projects = await getProjects();
+
+const meta = {
+	description: "Things Tiago Flora has built, and what made each one hard.",
+	title: "Projects",
+};
+---
+
+<PageLayout meta={meta}>
+	<h1 class="page-title">Projects</h1>
+	<ProjectList projects={projects} />
+	<p class="meta more">More on <a href="https://github.com/t-flora">GitHub</a>.</p>
+</PageLayout>
+
+<style>
+	.more {
+		margin-top: 2.5rem;
+	}
+</style>

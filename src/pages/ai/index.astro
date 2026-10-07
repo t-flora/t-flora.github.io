@@ -1,0 +1,59 @@
+---
+import PostPreview from "@/components/blog/PostPreview.astro";
+import PinCard from "@/components/hubs/PinCard.astro";
+import ProjectList from "@/components/hubs/ProjectList.astro";
+import Timeline from "@/components/hubs/Timeline.astro";
+import { AI_TAG, getProjects, getTimeline, hasTag } from "@/data/hubs";
+import { getAllPosts, getPinnedPost, sortMDByDate } from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+
+const posts = sortMDByDate(await getAllPosts());
+const pinned = getPinnedPost(posts);
+const writing = posts.filter((p) => hasTag(p, AI_TAG) && p !== pinned);
+const projects = (await getProjects()).filter((p) => hasTag(p, AI_TAG));
+const timeline = (await getTimeline()).filter((e) => hasTag(e, AI_TAG));
+
+const meta = {
+	description: "Tiago Flora on AI: interpretability, safety, and what we owe the systems we build.",
+	title: "AI",
+};
+---
+
+<PageLayout meta={meta}>
+	<h1 class="page-title">AI</h1>
+
+	{pinned && <PinCard post={pinned} />}
+
+	{
+		!!writing.length && (
+			<section>
+				<h2 class="section-title">Writing</h2>
+				<ul class="post-list">
+					{writing.map((p) => (
+						<li>
+							<PostPreview as="h3" post={p} withDesc />
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+
+	{
+		!!projects.length && (
+			<section>
+				<h2 class="section-title">Projects</h2>
+				<ProjectList projects={projects} />
+			</section>
+		)
+	}
+
+	{
+		!!timeline.length && (
+			<section>
+				<h2 class="section-title">Experience</h2>
+				<Timeline entries={timeline} />
+			</section>
+		)
+	}
+</PageLayout>

@@ -1,0 +1,193 @@
+---
+// Gwern-style hover previews for links inside [data-link-previews] containers.
+// Supported targets: this site's own posts (fetched and summarised from their HTML)
+// and Wikipedia articles (via Wikipedia's public page-summary API). Most other sites
+// refuse to be framed, so they get no preview. Only runs on devices that can hover.
+---
+
+<script>
+	type Preview = {
+		body: string;
+		meta?: string;
+		source: string;
+		thumb?: string;
+		title: string;
+	};
+
+	const OPEN_DELAY = 350;
+	const CLOSE_DELAY = 250;
+	const cache = new Map<string, Promise<Preview | null>>();
+
+	function wikipediaTarget(url: URL) {
+		const match = url.hostname.match(/^([a-z-]+)\.(?:m\.)?wikipedia\.org$/);
+		if (!match || !url.pathname.startsWith("/wiki/")) return null;
+		const title = decodeURIComponent(url.pathname.slice("/wiki/".length));
+		if (!title || title.includes(":")) return null; // skip Special:, File:, etc.
+		return { lang: match[1]!, title };
+	}
+
+	function isOwnPost(url: URL) {
+		return url.origin === location.origin && /^\/posts\/[^/]+\/?$/.test(url.pathname);
+	}
+
+	async function fetchOwnPost(url: URL): Promise<Preview | null> {
+		const res = await fetch(url.pathname);
+		if (!res.ok) return null;
+		const doc = new DOMParser().parseFromString(await res.text(), "text/html");
+		const title = doc.querySelector("article h1")?.textContent?.trim();
+		if (!title) return null;
+		const meta = [...doc.querySelectorAll(".post-header > .meta:not(.tags):not(.draft-label) > span")]
+			.map((s) => s.textContent?.replace(/\s+/g, " ").trim())
+			.filter(Boolean)
+			.join(" · ");
+		const description = doc.querySelector('meta[name="description"]')?.getAttribute("content");
+		const firstPara = [...doc.querySelectorAll(".prose > p")]
+			.map((p) => {
+				p.querySelectorAll(".sidenote").forEach((s) => s.remove());
+				return p.textContent?.trim() ?? "";
+			})
+			.find((t) => t.length > 40);
+		return {
+			body: firstPara ?? description ?? "",
+			meta,
+			source: "tflora",
+			title,
+		};
+	}
+
+	async function fetchWikipedia(lang: string, title: string): Promise<Preview | null> {
+		const res = await fetch(
+			`https://${lang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`,
+		);
+		if (!res.ok) return null;
+		const data = await res.json();
+		if (!data.extract) return null;
+		return {
+			body: data.extract,
+			source: `Wikipedia${lang === "en" ? "" : ` (${lang})`}`,
+			thumb: data.thumbnail?.source,
+			title: data.title,
+		};
+	}
+
+	function previewFor(link: HTMLAnchorElement): Promise<Preview | null> | null {
+		let url: URL;
+		try {
+			url = new URL(link.href, location.href);
+		} catch {
+			return null;
+		}
+		if (url.pathname === location.pathname && url.origin === location.origin) return null;
+		const wiki = wikipediaTarget(url);
+		const key = wiki ? `wiki:${wiki.lang}:${wiki.title}` : isOwnPost(url) ? url.pathname : null;
+		if (!key) return null;
+		if (!cache.has(key)) {
+			const load = wiki ? fetchWikipedia(wiki.lang, wiki.title) : fetchOwnPost(url);
+			cache.set(key, load.catch(() => null));
+		}
+		return cache.get(key)!;
+	}
+
+	function render(el: HTMLElement, p: Preview) {
+		el.replaceChildren();
+		if (p.thumb) {
+			const img = document.createElement("img");
+			img.className = "link-preview-thumb";
+			img.src = p.thumb;
+			img.alt = "";
+			el.append(img);
+		}
+		const add = (tag: string, cls: string, text?: string) => {
+			if (!text) return;
+			const node = document.createElement(tag);
+			node.className = cls;
+			node.textContent = text;
+			el.append(node);
+		};
+		add("p", "link-preview-title", p.title);
+		add("p", "link-preview-meta meta", p.meta);
+		add("p", "link-preview-body", p.body);
+		add("p", "link-preview-source", p.source);
+	}
+
+	function position(el: HTMLElement, link: HTMLAnchorElement) {
+		const rect = link.getClientRects()[0] ?? link.getBoundingClientRect();
+		const width = el.offsetWidth;
+		const height = el.offsetHeight;
+		const gap = 8;
+		let left = rect.left + window.scrollX;
+		left = Math.min(left, window.scrollX + document.documentElement.clientWidth - width - 16);
+		left = Math.max(left, window.scrollX + 16);
+		const below = rect.bottom + gap;
+		const fitsBelow = below + height < window.innerHeight;
+		const top = (fitsBelow ? below : rect.top - gap - height) + window.scrollY;
+		el.style.left = `${left}px`;
+		el.style.top = `${Math.max(top, window.scrollY + 8)}px`;
+	}
+
+	function init() {
+		if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+		const popup = document.createElement("div");
+		popup.className = "link-preview";
+		popup.setAttribute("role", "tooltip");
+		popup.id = "link-preview";
+		document.body.append(popup);
+
+		let activeLink: HTMLAnchorElement | null = null;
+		let openTimer: number | undefined;
+		let closeTimer: number | undefined;
+
+		const close = () => {
+			popup.removeAttribute("data-open");
+			activeLink?.removeAttribute("aria-describedby");
+			activeLink = null;
+		};
+		const scheduleClose = () => {
+			clearTimeout(openTimer);
+			clearTimeout(closeTimer);
+			closeTimer = window.setTimeout(close, CLOSE_DELAY);
+		};
+
+		document.addEventListener("mouseover", (event) => {
+			const target = event.target as Element;
+			if (popup.contains(target)) {
+				clearTimeout(closeTimer);
+				return;
+			}
+			const link = target.closest<HTMLAnchorElement>("[data-link-previews] a[href]");
+			if (!link || link === activeLink) return;
+			const load = previewFor(link);
+			if (!load) return;
+
+			clearTimeout(openTimer);
+			clearTimeout(closeTimer);
+			openTimer = window.setTimeout(async () => {
+				const preview = await load;
+				if (!preview || !link.matches(":hover")) return;
+				activeLink?.removeAttribute("aria-describedby");
+				activeLink = link;
+				render(popup, preview);
+				position(popup, link);
+				link.setAttribute("aria-describedby", popup.id);
+				popup.setAttribute("data-open", "");
+			}, OPEN_DELAY);
+		});
+
+		document.addEventListener("mouseout", (event) => {
+			const target = event.target as Element;
+			const related = event.relatedTarget as Element | null;
+			if (related && (popup.contains(related) || related === activeLink)) return;
+			if (popup.contains(target) || target.closest("[data-link-previews] a[href]")) scheduleClose();
+		});
+
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "Escape") close();
+		});
+		window.addEventListener("scroll", () => activeLink && !activeLink.matches(":hover") && close(), {
+			passive: true,
+		});
+	}
+
+	init();
+</script>

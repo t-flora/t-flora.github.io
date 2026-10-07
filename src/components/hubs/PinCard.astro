@@ -1,0 +1,75 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import FormattedDate from "../FormattedDate.astro";
+
+interface Props {
+	post: CollectionEntry<"post">;
+}
+
+const { post } = Astro.props;
+const { data } = post;
+---
+
+<section aria-labelledby="pin-title" class="pin">
+	<p class="meta pin-label">
+		Pinned <span class="muted">· what I'd point you to now, not a final word</span>
+	</p>
+	<h2 id="pin-title">
+		<a href={`/posts/${post.id}/`}>{data.title}</a>
+	</h2>
+	{data.description && <p class="desc">{data.description}</p>}
+	<p class="meta">
+		<span>Published <FormattedDate date={data.publishDate} /></span>
+		{
+			data.lastReviewed && (
+				<span>
+					Last reviewed <FormattedDate date={data.lastReviewed} />
+				</span>
+			)
+		}
+		{data.status && <span>Status: {data.status}</span>}
+	</p>
+</section>
+
+<style>
+	.pin {
+		margin: 0 0 3rem;
+		padding: 1.1rem 1.3rem 1.2rem;
+		border-inline-start: 2px solid var(--accent);
+		background: var(--bg-raised);
+		border-radius: 0 4px 4px 0;
+	}
+
+	.pin-label {
+		margin: 0 0 0.35rem;
+		color: var(--accent);
+	}
+
+	h2 {
+		margin: 0;
+		font-size: 1.35rem;
+	}
+
+	h2 a {
+		text-decoration-color: transparent;
+	}
+
+	h2 a:hover {
+		text-decoration-color: currentColor;
+	}
+
+	.desc {
+		margin: 0.35rem 0 0.5rem;
+	}
+
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.2rem 0.9rem;
+	}
+
+	.meta:last-child {
+		margin: 0;
+	}
+</style>

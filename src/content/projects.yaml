@@ -1,0 +1,48 @@
+# Projects shown on /projects/ and the Work Hub (and the AI Hub, if tagged "ai").
+# Fields: title, summary, hard (what made it hard), repo, url (live version, optional),
+#         stack, tags, order (lower first).
+
+- id: fast-options-pricer
+  title: fast-options-pricer
+  order: 1
+  summary: A header-only C++20 library that prices European options under Black–Scholes three ways, in closed form, by Monte Carlo and by Crank–Nicolson finite differences.
+  hard: Making the slow methods fast and accurate. Antithetic and control variates cut Monte Carlo variance roughly 20–100×, and a Rannacher-started, pre-factored Crank–Nicolson solver prices an 800×200 grid in about 0.6 ms.
+  repo: https://github.com/t-flora/fast-options-pricer
+  stack: [C++20, CMake, Google Benchmark]
+  tags: [c++, finance, performance]
+
+- id: fbm-fast-pricers
+  title: fbm-fast-pricers
+  order: 2
+  summary: A Monte Carlo pricer for arithmetic Asian calls under rough fractional stochastic volatility, comparing three ways to sample fractional Brownian motion.
+  hard: Path generation dominates the cost. Circulant embedding with FFT overtakes dense Cholesky at about 250 time steps and is 7.6× faster at 4,000; a low-rank rSVD sampler is faster still but underprices by about 4%.
+  repo: https://github.com/t-flora/fbm-fast-pricers
+  stack: [C++17, Eigen, FFTW, Python]
+  tags: [c++, finance, numerical-methods]
+
+- id: stratum
+  title: stratum
+  order: 3
+  summary: A three-layer, Hyrule-inspired map for deep technical study, starting with HPC. You clear shrines by committing a small build and a write-up, and the map is rendered from the repo.
+  hard: Keeping the repository as the only source of truth, with no database or browser storage, while rendering a 217-entry, 22-region world as an explorable map.
+  repo: https://github.com/t-flora/stratum
+  stack: [TypeScript, Svelte 5, D3]
+  tags: [learning, hpc]
+
+- id: orderbook-reconstructor
+  title: orderbook-reconstructor
+  order: 4
+  summary: Rebuilds a 10-level market-by-price order book from a Databento market-by-order feed, with a parser, a reconstruction engine and a writer.
+  hard: Parsing a high-volume feed without allocating, using string_view fields over a fixed 256-byte line buffer sized from the maximum field lengths.
+  repo: https://github.com/t-flora/orderbook-reconstructor
+  stack: [C++, Make]
+  tags: [c++, finance, market-microstructure]
+
+- id: the-hack-computer
+  title: the_hack_computer
+  order: 5
+  summary: The nand2tetris computer built from logic gates up, covering the ALU, memory, CPU and a working computer, plus an assembler written in Python.
+  hard: Building every layer only from the one below it, from NAND gates through the CPU to an assembler for its instruction set.
+  repo: https://github.com/t-flora/the_hack_computer
+  stack: [Hack HDL, Hack assembly, Python]
+  tags: [systems]

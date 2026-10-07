@@ -1,3 +1,17 @@
-<a class="sr-only focus:not-sr-only focus:fixed focus:start-1 focus:top-1.5" href="#main"
-	>skip to content
-</a>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<style>
+	.skip-link {
+		position: absolute;
+		top: 0.5rem;
+		left: 0.5rem;
+		z-index: 100;
+		padding: 0.3rem 0.6rem;
+		background: var(--bg-raised);
+		transform: translateY(-200%);
+	}
+
+	.skip-link:focus {
+		transform: none;
+	}
+</style>

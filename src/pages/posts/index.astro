@@ -1,0 +1,169 @@
+---
+import PostPreview from "@/components/blog/PostPreview.astro";
+import { getAllPosts, getUniqueTagsWithCount, groupPostsByYear, sortMDByDate } from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+
+const posts = sortMDByDate(await getAllPosts());
+const tags = getUniqueTagsWithCount(posts).map(([tag]) => tag);
+const byYear = groupPostsByYear(posts);
+const years = Object.keys(byYear).sort((a, b) => +b - +a);
+
+const meta = {
+	description: "Essays, reviews and notes by Tiago Flora",
+	title: "Writing",
+};
+---
+
+<PageLayout meta={meta}>
+	<h1 class="page-title">Writing</h1>
+
+	{
+		!!tags.length && (
+			<div class="filters" hidden id="tag-filters">
+				<p class="meta filters-label" id="filters-label">
+					Filter by tag
+				</p>
+				<div aria-labelledby="filters-label" class="chips" role="group">
+					{tags.map((tag) => (
+						<button aria-pressed="false" class="chip" data-tag={tag} type="button">
+							{tag}
+						</button>
+					))}
+					<button class="chip clear" hidden type="button">
+						Clear
+					</button>
+				</div>
+			</div>
+		)
+	}
+
+	{
+		years.map((year) => (
+			<section class="year" data-year={year}>
+				<h2 class="section-title">{year}</h2>
+				<ul class="post-list">
+					{byYear[year]!.map((p) => (
+						<li data-tags={p.data.tags.join(" ")}>
+							<PostPreview as="h3" post={p} withDesc />
+						</li>
+					))}
+				</ul>
+			</section>
+		))
+	}
+	<p class="meta empty" hidden>No posts match those tags.</p>
+
+	<aside class="subscribe">
+		<p>
+			New posts also go out by email through
+			<a href="https://busywaiting.substack.com/subscribe">Busywaiting on Substack</a>, which is
+			also where comments live. Or follow the <a href="/rss.xml">RSS feed</a>.
+		</p>
+	</aside>
+</PageLayout>
+
+<script>
+	// Multi-select tag chips: a post shows if it has any selected tag.
+	// Selection is mirrored in ?tags=a,b so filtered views can be linked.
+	const root = document.getElementById("tag-filters");
+	if (root) {
+		root.hidden = false;
+		const chips = [...root.querySelectorAll<HTMLButtonElement>(".chip[data-tag]")];
+		const clear = root.querySelector<HTMLButtonElement>(".chip.clear")!;
+		const items = [...document.querySelectorAll<HTMLLIElement>("li[data-tags]")];
+		const years = [...document.querySelectorAll<HTMLElement>("section.year")];
+		const empty = document.querySelector<HTMLElement>(".empty")!;
+
+		const selected = new Set(
+			(new URLSearchParams(location.search).get("tags") ?? "").split(",").filter(Boolean),
+		);
+
+		const apply = () => {
+			for (const chip of chips) chip.setAttribute("aria-pressed", String(selected.has(chip.dataset.tag!)));
+			clear.hidden = selected.size === 0;
+			for (const item of items) {
+				const tags = item.dataset.tags!.split(" ");
+				item.hidden = selected.size > 0 && !tags.some((t) => selected.has(t));
+			}
+			for (const year of years) year.hidden = !year.querySelector("li:not([hidden])");
+			empty.hidden = items.some((i) => !i.hidden);
+
+			const url = new URL(location.href);
+			if (selected.size) url.searchParams.set("tags", [...selected].join(","));
+			else url.searchParams.delete("tags");
+			history.replaceState(null, "", url);
+		};
+
+		for (const chip of chips) {
+			chip.addEventListener("click", () => {
+				const tag = chip.dataset.tag!;
+				if (selected.has(tag)) selected.delete(tag);
+				else selected.add(tag);
+				apply();
+			});
+		}
+		clear.addEventListener("click", () => {
+			selected.clear();
+			apply();
+		});
+		apply();
+	}
+</script>
+
+<style>
+	.filters {
+		margin: -0.75rem 0 2rem;
+	}
+
+	.filters-label {
+		margin: 0 0 0.5rem;
+	}
+
+	.chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+
+	.chip {
+		padding: 0.15rem 0.65rem;
+		border: 1px solid var(--rule);
+		border-radius: 999px;
+		background: transparent;
+		color: var(--text-muted);
+		font: inherit;
+		font-size: 0.85rem;
+		cursor: pointer;
+	}
+
+	.chip:hover {
+		color: var(--text);
+		border-color: var(--text-muted);
+	}
+
+	.chip[aria-pressed="true"] {
+		border-color: var(--accent);
+		background: color-mix(in srgb, var(--accent) 12%, transparent);
+		color: var(--text);
+	}
+
+	.chip.clear {
+		border-style: dashed;
+	}
+
+	[hidden] {
+		display: none !important;
+	}
+
+	.subscribe {
+		margin-top: 3.5rem;
+		padding: 1rem 1.2rem;
+		border: 1px solid var(--rule);
+		border-radius: 4px;
+		font-size: 0.95rem;
+	}
+
+	.subscribe p {
+		margin: 0;
+	}
+</style>

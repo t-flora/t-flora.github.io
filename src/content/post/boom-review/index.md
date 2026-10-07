@@ -3,6 +3,7 @@ title: "Reviewing 'Boom: Bubbles and the End of Stagnation'"
 description: "Entertaining, but lost in reference"
 publishDate: "23 Jan 2025"
 tags: ["book-review"]
+status: "finished"
 draft: false
 ---
 

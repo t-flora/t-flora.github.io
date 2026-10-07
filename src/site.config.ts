@@ -4,6 +4,8 @@ import type { AstroExpressiveCodeOptions } from "astro-expressive-code";
 export const siteConfig: SiteConfig = {
 	// Used as both a meta property (src/components/BaseHead.astro L:31 + L:49) & the generated satori png (src/pages/og-image/[slug].png.ts)
 	author: "Tiago Flora",
+	// Shown (obfuscated) in the footer.
+	email: "tiagomflora@gmail.com",
 	// Date.prototype.toLocaleDateString() parameters, found in src/utils/date.ts.
 	date: {
 		locale: "en-US",
@@ -14,52 +16,48 @@ export const siteConfig: SiteConfig = {
 		},
 	},
 	// Meta property used as the default description meta property
-	description: "A blog",
+	description: "Tiago Flora's writing and projects",
 	// HTML lang property, found in src/layouts/Base.astro L:18
 	lang: "en-US",
 	// Meta property, found in src/components/BaseHead.astro L:42
 	ogLocale: "en_US",
-	// Option to sort posts by updatedDate if set to true (if property exists). Default (false) will sort by publishDate
-	sortPostsByUpdatedDate: false,
 	// Meta property used to construct the meta title property, found in src/components/BaseHead.astro L:11
 	title: "tflora",
-	webmentions: {
-		// Webmention.io API endpoint. Get your own here: https://webmention.io/, and follow this blog post: https://astro-cactus.chriswilliams.dev/posts/webmentions/
-		link: "https://webmention.io/astro-cactus.chriswilliams.dev/webmention",
-	},
 };
 
 // Used to generate links in both the Header & Footer.
 export const menuLinks: { path: string; title: string }[] = [
-	{
-		path: "/",
-		title: "home",
-	},
-	// {
-	// 	path: "/about/",
-	// 	title: "About",
-	// },
-	{
-		path: "/posts/",
-		title: "writing",
-	},
-	{
-		path: "/contact/",
-		title: "contact",
-	},
+	{ path: "/ai/", title: "AI" },
+	{ path: "/work/", title: "Work" },
+	{ path: "/posts/", title: "Writing" },
+	{ path: "/projects/", title: "Projects" },
+];
+
+// Used in the footer.
+export const socialLinks: { link: string; name: string }[] = [
+	{ link: "https://github.com/t-flora", name: "GitHub" },
+	{ link: "https://linkedin.com/in/tiago-flora", name: "LinkedIn" },
+	{ link: "https://x.com/__tflora__", name: "X" },
+	{ link: "https://busywaiting.substack.com", name: "Substack" },
 ];
 
 // https://expressive-code.com/reference/configuration/
 export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 	styleOverrides: {
-		borderRadius: "4px",
+		borderRadius: "3px",
+		codeBackground: "var(--bg-raised)",
 		codeFontFamily:
 			'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;',
 		codeFontSize: "0.875rem",
 		codeLineHeight: "1.7142857rem",
 		codePaddingInline: "1rem",
+		borderColor: "var(--rule)",
 		frames: {
+			editorActiveTabBackground: "var(--bg-raised)",
+			editorTabBarBackground: "var(--bg-raised)",
 			frameBoxShadowCssValue: "none",
+			terminalBackground: "var(--bg-raised)",
+			terminalTitlebarBackground: "var(--bg-raised)",
 		},
 		uiLineHeight: "inherit",
 	},
@@ -75,6 +73,6 @@ export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 		return `[data-theme="${theme.name}"]`;
 	},
 	// One dark, one light theme => https://expressive-code.com/guides/themes/#available-themes
-	themes: ["dracula", "github-light"],
+	themes: ["github-dark-dimmed", "github-light"],
 	useThemedScrollbars: false,
 };

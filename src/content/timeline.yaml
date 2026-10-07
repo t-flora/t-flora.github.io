@@ -1,0 +1,124 @@
+# The Timeline on the Work Hub. Newest first is not required; entries are sorted by date.
+# Fields: org, role, start (YYYY-MM, optional), end (YYYY-MM or "present", optional),
+#         kind (work | education | teaching | community | other), place, lines (1-2), link, tags.
+# Entries tagged "ai" also appear on the AI Hub. Add anything here, including things not on the resume.
+
+- id: ice-2026
+  org: Intercontinental Exchange
+  role: C++ Developer Intern
+  start: 2026-06
+  end: 2026-08
+  kind: work
+  place: Atlanta, GA
+  lines:
+    - Wrote a new C++17 data-processing architecture for volatility surface construction.
+    - Led AI best-practices documentation for the Curve Engine C++ team.
+
+- id: etai-fellowship-2026
+  org: Economics of Transformative AI Fellowship
+  role: Facilitator
+  start: 2026-09
+  end: present
+  kind: teaching
+  place: Chicago, IL
+  lines:
+    - Facilitating the Autumn 2026 fellowship for University of Chicago undergraduates.
+  tags: [ai]
+
+- id: 7chord-2026
+  org: 7 Chord
+  role: Quantitative Researcher, UChicago Project Lab
+  start: 2026-01
+  end: 2026-03
+  kind: work
+  place: Chicago, IL
+  lines:
+    - Led a greenfield pipeline collecting 100+ US Treasury data fields into MongoDB and PostgreSQL.
+
+- id: manteio-2025
+  org: Manteio Capital
+  role: Quantitative Researcher, UChicago Project Lab
+  start: 2025-10
+  end: 2025-12
+  kind: work
+  place: Chicago, IL
+  lines:
+    - Built a PyTorch signal model for return forecasting and led portfolio implementation in a team of six.
+
+- id: uchicago-msfm
+  org: University of Chicago
+  role: MS in Financial Mathematics
+  end: 2026-12
+  kind: education
+  place: Chicago, IL
+  lines:
+    - Concentrations in financial computing (HPC, C++) and machine learning.
+
+- id: eve-2022
+  org: Eve Air Mobility
+  role: Sales Engineer, internal tools and operations modeling
+  start: 2022-06
+  end: 2025-05
+  kind: work
+  place: San Francisco, CA
+  lines:
+    - Cut peak memory by 90% and processing time by 75% in a SageMaker toolchain.
+    - Monte Carlo and sensitivity analyses behind $350M+ in signed sales agreements.
+
+- id: arena-2024
+  org: Alignment Research Engineering Accelerator (ARENA 3.0)
+  role: Study group coordinator
+  start: 2024-04
+  end: 2024-06
+  kind: community
+  place: San Francisco, CA
+  lines:
+    - Ran weekly Bay Area meetups on mechanistic interpretability; replicated "Indirect Object Identification in GPT-2 Small".
+  tags: [ai]
+
+- id: develop-for-good-2023
+  org: Develop for Good
+  role: Data Engineer (volunteer)
+  start: 2023-05
+  end: 2023-08
+  kind: community
+  lines:
+    - Led a database migration and Tableau dashboards evaluating programs that reach 10,000 beneficiaries.
+
+- id: eve-intern-2021
+  org: Eve Air Mobility
+  role: Data Science Intern
+  start: 2021-05
+  end: 2022-05
+  kind: work
+  place: San Francisco, CA
+  lines:
+    - Built named-entity recognition models that halved routine competitor-analysis time.
+
+- id: minerva-mentorship
+  org: Minerva Mentorship Program
+  role: Student mentor
+  start: 2021-08
+  end: present
+  kind: community
+  lines:
+    - Mentoring two students per semester; wrote a mentorship framework for students joining startups.
+
+- id: minerva-curriculum
+  org: Minerva University
+  role: Computational Sciences Curriculum Developer
+  start: 2020-05
+  end: 2022-05
+  kind: teaching
+  place: San Francisco, CA
+  lines:
+    - Applied science-of-learning principles to statistics and algorithms courses; co-wrote interactive Jupyter notebooks.
+
+- id: minerva-bs
+  org: Minerva University
+  role: BS in Computational Sciences
+  end: 2022-05
+  kind: education
+  place: San Francisco, CA
+  lines:
+    - Capstone on named-entity recognition for corporate news; led PyTorch NLP and deep RL tutorial sessions.

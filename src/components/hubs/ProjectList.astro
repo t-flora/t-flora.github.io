@@ -1,0 +1,93 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+	/** "full" shows what made it hard and the stack; "compact" is title + summary. */
+	variant?: "compact" | "full";
+	projects: CollectionEntry<"project">[];
+}
+
+const { projects, variant = "full" } = Astro.props;
+---
+
+<ul class:list={["projects", variant]}>
+	{
+		projects.map(({ data }) => (
+			<li>
+				<h3>
+					<a href={data.url ?? data.repo}>{data.title}</a>
+				</h3>
+				<p class="summary">{data.summary}</p>
+				{variant === "full" && (
+					<>
+						<p class="hard">
+							<span class="label">Hard part:</span> {data.hard}
+						</p>
+						<p class="meta links">
+							{!!data.stack.length && <span>{data.stack.join(" · ")}</span>}
+							{data.url && <a href={data.url}>Live</a>}
+							<a href={data.repo}>Source</a>
+						</p>
+					</>
+				)}
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.projects {
+		display: grid;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.full {
+		gap: 1.75rem;
+	}
+
+	.compact {
+		gap: 0.9rem;
+	}
+
+	h3 {
+		margin: 0;
+		font-size: 1.05rem;
+		font-weight: 600;
+		font-variant-numeric: lining-nums;
+	}
+
+	h3 a {
+		text-decoration-color: transparent;
+	}
+
+	h3 a:hover {
+		text-decoration-color: currentColor;
+	}
+
+	p {
+		margin: 0.2rem 0 0;
+	}
+
+	.compact .summary {
+		color: var(--text-muted);
+		font-size: 0.95rem;
+	}
+
+	.hard {
+		font-size: 0.95rem;
+	}
+
+	.label {
+		font-style: italic;
+		color: var(--text-muted);
+	}
+
+	.links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.2rem 0.9rem;
+		margin-top: 0.35rem;
+	}
+</style>

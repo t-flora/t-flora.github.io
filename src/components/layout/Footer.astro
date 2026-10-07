@@ -1,26 +1,53 @@
 ---
-import { menuLinks, siteConfig } from "@/site-config";
+import { siteConfig, socialLinks } from "@/site-config";
 
 const year = new Date().getFullYear();
+// Stored reversed and assembled in the browser so the address isn't in the HTML as-is.
+const reversedEmail = [...siteConfig.email].reverse().join("");
 ---
 
-<footer
-	class="mt-auto flex w-full flex-col items-center justify-center gap-y-2 pb-4 pt-20 text-center align-top font-semibold text-gray-600 dark:text-gray-400 sm:flex-row sm:justify-between sm:text-xs"
->
-	<div class="me-0 sm:me-4">
-		&copy; {siteConfig.author}
-		{year}.<span class="inline-block">&nbsp;🛜&nbsp; Theme: <a href="https://github.com/chrismwilliams/astro-theme-cactus">Astro Cactus by Chris Williams</a></span>
-	</div>
-	<nav
-		aria-label="More on this site"
-		class="flex gap-x-2 sm:gap-x-0 sm:divide-x sm:divide-gray-500"
-	>
+<footer class="site-footer meta">
+	<span>&copy; {year} {siteConfig.author}</span>
+	<ul>
+		<li><a data-email={reversedEmail} href="/" id="email-link">Email</a></li>
 		{
-			menuLinks.map((link) => (
-				<a class="px-4 py-2 sm:py-0 sm:hover:text-textColor sm:hover:underline" href={link.path}>
-					{link.title}
-				</a>
+			socialLinks.map(({ link, name }) => (
+				<li>
+					<a href={link} rel="noopener noreferrer">
+						{name}
+					</a>
+				</li>
 			))
 		}
-	</nav>
+		<li><a href="/rss.xml">RSS</a></li>
+	</ul>
 </footer>
+
+<script>
+	const link = document.getElementById("email-link") as HTMLAnchorElement | null;
+	if (link?.dataset.email) link.href = `mailto:${[...link.dataset.email].reverse().join("")}`;
+</script>
+
+<style>
+	.site-footer {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 0.5rem 1.5rem;
+		/* Border spans the text column only, not the page padding. */
+		width: calc(100% - 2 * var(--page-padding));
+		max-width: calc(var(--measure) + var(--frame-extra));
+		margin: 0 auto;
+		padding: 2rem var(--frame-extra) 2.5rem 0;
+		border-top: 1px solid var(--rule);
+	}
+
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+</style>

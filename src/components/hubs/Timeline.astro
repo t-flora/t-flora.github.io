@@ -1,0 +1,98 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import { formatSpan } from "@/data/hubs";
+
+interface Props {
+	entries: CollectionEntry<"timeline">[];
+}
+
+const { entries } = Astro.props;
+---
+
+<ol class="timeline">
+	{
+		entries.map((entry) => {
+			const { data } = entry;
+			return (
+				<li>
+					<p class="meta when">
+						<span>{formatSpan(entry)}</span>
+						<span class="kind">{data.kind}</span>
+					</p>
+					<div class="what">
+						<h3>
+							{data.link ? <a href={data.link}>{data.org}</a> : data.org}
+							<span class="role">{data.role}</span>
+						</h3>
+						{data.lines.map((line) => (
+							<p>{line}</p>
+						))}
+					</div>
+				</li>
+			);
+		})
+	}
+</ol>
+
+<style>
+	.timeline {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	li {
+		display: grid;
+		grid-template-columns: 9.5rem 1fr;
+		gap: 0 1.25rem;
+		padding: 0.9rem 0;
+		border-top: 1px solid var(--rule);
+	}
+
+	li:last-child {
+		border-bottom: 1px solid var(--rule);
+	}
+
+	.when {
+		display: flex;
+		flex-direction: column;
+		margin: 0.15rem 0 0;
+	}
+
+	.kind {
+		opacity: 0.8;
+		font-style: italic;
+	}
+
+	h3 {
+		margin: 0;
+		font-size: 1rem;
+		font-weight: 600;
+		line-height: 1.4;
+	}
+
+	.role {
+		display: block;
+		font-weight: 400;
+		color: var(--text-muted);
+		font-size: 0.95rem;
+	}
+
+	.what p {
+		margin: 0.3rem 0 0;
+		font-size: 0.95rem;
+	}
+
+	@media (max-width: 34rem) {
+		li {
+			grid-template-columns: 1fr;
+		}
+
+		.when {
+			flex-direction: row;
+			gap: 0.8rem;
+			margin-bottom: 0.3rem;
+		}
+	}
+</style>

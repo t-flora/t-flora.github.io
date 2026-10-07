@@ -1,22 +1,68 @@
 ---
 import type { MarkdownHeading } from "astro";
 
-import { generateToc } from "src/utils/generateToc";
-
-import TOCHeading from "./TOCHeading.astro";
+import { generateToc, type TocItem } from "@/utils";
 
 interface Props {
 	headings: MarkdownHeading[];
 }
 
-const { headings } = Astro.props;
-
-const toc = generateToc(headings);
+const toc = generateToc(Astro.props.headings, { maxHeadingLevel: 3 });
 ---
 
-<aside class="sticky top-20 order-2 -me-32 hidden basis-64 lg:block">
-	<h2 class="font-semibold">Table of Contents</h2>
-	<ul class="mt-4 text-xs">
-		{toc.map((heading) => <TOCHeading heading={heading} />)}
-	</ul>
-</aside>
+{
+	toc.length >= 3 && (
+		<details class="toc">
+			<summary class="meta">Contents</summary>
+			<ol>
+				{toc.map((h: TocItem) => (
+					<li>
+						<a href={`#${h.slug}`}>{h.text}</a>
+						{!!h.children.length && (
+							<ol>
+								{h.children.map((c) => (
+									<li>
+										<a href={`#${c.slug}`}>{c.text}</a>
+									</li>
+								))}
+							</ol>
+						)}
+					</li>
+				))}
+			</ol>
+		</details>
+	)
+}
+
+<style>
+	.toc {
+		margin: -1rem 0 2.5rem;
+		font-size: 0.9rem;
+	}
+
+	summary {
+		cursor: pointer;
+		width: fit-content;
+	}
+
+	ol {
+		margin: 0.5rem 0 0;
+		padding-inline-start: 1.2rem;
+	}
+
+	ol ol {
+		margin-top: 0.15rem;
+	}
+
+	li + li {
+		margin-top: 0.15rem;
+	}
+
+	a {
+		text-decoration-color: transparent;
+	}
+
+	a:hover {
+		text-decoration-color: currentColor;
+	}
+</style>

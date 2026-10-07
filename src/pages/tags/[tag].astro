@@ -1,0 +1,31 @@
+---
+// Old tag pages (/tags/<tag>/) now live as filtered views of Writing.
+import { getAllPosts, getUniqueTags } from "@/data/post";
+
+export async function getStaticPaths() {
+	// Tags that existed on the old site but have since been renamed.
+	const renamed: Record<string, string> = { essays: "essay", series: "education" };
+	const current = getUniqueTags(await getAllPosts());
+	return [...new Set([...current, ...Object.keys(renamed)])].map((tag) => ({
+		params: { tag },
+		props: { target: `/posts/?tags=${encodeURIComponent(renamed[tag] ?? tag)}` },
+	}));
+}
+
+const { tag } = Astro.params;
+const { target } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Redirecting to {target}</title>
+		<meta content={`0;url=${target}`} http-equiv="refresh" />
+		<meta content="noindex" name="robots" />
+		<link href={new URL(target, Astro.site)} rel="canonical" />
+	</head>
+	<body>
+		<a href={target}>Posts tagged {tag}</a>
+	</body>
+</html>

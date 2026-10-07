@@ -2,8 +2,6 @@
 import type { HTMLTag, Polymorphic } from "astro/types";
 import type { CollectionEntry } from "astro:content";
 
-import { getPostSortDate } from "@/data/post";
-
 import FormattedDate from "../FormattedDate.astro";
 
 type Props<Tag extends HTMLTag> = {
@@ -12,14 +10,55 @@ type Props<Tag extends HTMLTag> = {
 } & Polymorphic<{ as: Tag }>;
 
 const { as: Tag = "div", post, withDesc = false } = Astro.props;
-const postDate = getPostSortDate(post);
+const { data } = post;
 ---
 
-<FormattedDate class="min-w-[120px] text-gray-600 dark:text-gray-400" date={postDate} />
-<Tag>
-	{post.data.draft && <span class="text-red-500">(Draft) </span>}
-	<a class="cactus-link" data-astro-prefetch href={`/posts/${post.slug}/`}>
-		{post.data.title}
-	</a>
-</Tag>
-{withDesc && <q class="line-clamp-3 italic">{post.data.description}</q>}
+<div class="post-preview">
+	<Tag class="title">
+		<a data-astro-prefetch href={`/posts/${post.id}/`}>{data.title}</a>
+	</Tag>
+	<p class="meta">
+		<FormattedDate date={data.publishDate} />
+		{data.status && <span>{data.status}</span>}
+		{data.draft && <span class="draft">draft</span>}
+	</p>
+	{withDesc && data.description && <p class="desc">{data.description}</p>}
+</div>
+
+<style>
+	.post-preview {
+		display: grid;
+		gap: 0.1rem;
+	}
+
+	.title {
+		margin: 0;
+		font-size: 1.05rem;
+		font-weight: 500;
+		line-height: 1.35;
+	}
+
+	.title a {
+		text-decoration-color: transparent;
+	}
+
+	.title a:hover {
+		text-decoration-color: currentColor;
+	}
+
+	.meta {
+		display: flex;
+		gap: 0.7rem;
+		margin: 0;
+	}
+
+	.draft {
+		color: var(--accent);
+	}
+
+	.desc {
+		margin: 0.15rem 0 0;
+		color: var(--text-muted);
+		font-size: 0.95rem;
+	}
+</style>

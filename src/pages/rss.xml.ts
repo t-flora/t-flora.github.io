@@ -10,7 +10,7 @@ export const GET = async () => {
 		description: siteConfig.description,
 		items: posts.map((post) => ({
 			description: post.data.description,
-			link: `posts/${post.slug}`,
+			link: `posts/${post.id}/`,
 			pubDate: post.data.publishDate,
 			title: post.data.title,
 		})),

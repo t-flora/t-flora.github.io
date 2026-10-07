@@ -1,6 +1,8 @@
 ---
 import type { SiteMeta } from "@/types";
 
+import { Font } from "astro:assets";
+
 import { siteConfig } from "@/site-config";
 
 import "../styles/global.css";
@@ -19,6 +21,7 @@ const socialImageURL = new URL(ogImage ? ogImage : "/social-card.png", Astro.url
 <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
 <meta content="IE=edge" http-equiv="X-UA-Compatible" />
 <title>{siteTitle}</title>
+<Font cssVariable="--font-source-serif" preload />
 
 {/* Icons / Favicon */}
 <link href="/logo.ico" rel="icon" sizes="any" />
@@ -66,17 +69,5 @@ const socialImageURL = new URL(ogImage ? ogImage : "/social-card.png", Astro.url
 
 {/* RSS auto-discovery */}
 <link href="/rss.xml" rel="alternate" title={siteConfig.title} type="application/rss+xml" />
-
-{/* Webmentions */}
-{
-	siteConfig.webmentions && (
-		<>
-			<link href={siteConfig.webmentions.link} rel="webmention" />
-			{siteConfig.webmentions.pingback && (
-				<link href={siteConfig.webmentions.pingback} rel="pingback" />
-			)}
-		</>
-	)
-}
 
 <meta content={Astro.generator} name="generator" />

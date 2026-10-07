@@ -7,6 +7,7 @@ publishDate: "22 May 2023"
 #   src: "./cover.png"
 #   alt: "Astro build wallpaper"
 tags: ["opinion", "low-level"]
+status: "sketch"
 ---
 
 Do you know how CPUs work? 

@@ -1,0 +1,153 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import { Image } from "astro:assets";
+
+import { getReviewBaseline, isAging } from "@/data/post";
+
+import FormattedDate from "../FormattedDate.astro";
+
+interface Props {
+	post: CollectionEntry<"post">;
+}
+
+const { post } = Astro.props;
+const { data } = post;
+const baseline = getReviewBaseline(post);
+if (import.meta.env.PROD && !data.draft && data.authorNote?.startsWith("TODO")) {
+	throw new Error(`Post "${post.id}" has a placeholder author's note; write it or remove it before publishing.`);
+}
+const agingNote = data.lastReviewed
+	? "Last reviewed over a year ago; my views may have moved."
+	: "Written over a year ago; my views may have moved.";
+---
+
+<header class="post-header">
+	{
+		data.coverImage && (
+			<Image
+				alt={data.coverImage.alt}
+				class="cover"
+				fetchpriority="high"
+				loading="eager"
+				src={data.coverImage.src}
+			/>
+		)
+	}
+	{data.draft && <p class="meta draft-label">Draft: not published</p>}
+	<h1>{data.title}</h1>
+	<p class="meta">
+		<span>Published <FormattedDate date={data.publishDate} /></span>
+		{
+			data.lastReviewed && (
+				<span>
+					Last reviewed <FormattedDate date={data.lastReviewed} />
+				</span>
+			)
+		}
+		{data.status && <span>Status: {data.status}</span>}
+	</p>
+	{
+		!!data.tags.length && (
+			<p class="meta tags">
+				{data.tags.map((tag) => (
+					<a data-pagefind-filter="tag" href={`/posts/?tags=${encodeURIComponent(tag)}`}>
+						{tag}
+					</a>
+				))}
+			</p>
+		)
+	}
+	{
+		data.authorNote && (
+			<aside class="author-note">
+				<p class="meta">Author's note</p>
+				<p>{data.authorNote}</p>
+			</aside>
+		)
+	}
+	<p
+		class="aging-note"
+		data-reviewed={baseline.toISOString()}
+		hidden={!isAging(post)}
+	>
+		{agingNote}
+	</p>
+</header>
+
+<script>
+	// The site is static, so re-check age in the browser: a post can cross the
+	// one-year threshold long after the last build.
+	import { AGING_THRESHOLD_MS } from "@/utils/aging";
+
+	for (const note of document.querySelectorAll<HTMLElement>(".aging-note[data-reviewed]")) {
+		const reviewed = Date.parse(note.dataset.reviewed!);
+		if (Date.now() - reviewed > AGING_THRESHOLD_MS) note.hidden = false;
+	}
+</script>
+
+<style>
+	.post-header {
+		margin-bottom: 2.5rem;
+	}
+
+	.cover {
+		display: block;
+		width: 100%;
+		height: auto;
+		margin-bottom: 2rem;
+		border-radius: 3px;
+	}
+
+	.draft-label {
+		color: var(--accent);
+		margin: 0 0 0.4rem;
+	}
+
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.2rem 0.9rem;
+		margin: 0;
+	}
+
+	.tags {
+		margin-top: 0.25rem;
+	}
+
+	.tags a::before {
+		content: "#";
+		opacity: 0.6;
+	}
+
+	.aging-note {
+		margin: 1.25rem 0 0;
+		padding: 0.55rem 0.9rem;
+		border-inline-start: 2px solid var(--accent);
+		background: var(--bg-raised);
+		color: var(--text-muted);
+		font-size: 0.9rem;
+		font-style: italic;
+	}
+
+	.author-note {
+		margin: 1.25rem 0 0;
+		padding: 0.7rem 1rem 0.8rem;
+		border: 1px solid var(--rule);
+		border-inline-start: 2px solid var(--accent);
+		border-radius: 0 4px 4px 0;
+	}
+
+	.author-note p {
+		margin: 0;
+	}
+
+	.author-note .meta {
+		margin-bottom: 0.2rem;
+		color: var(--accent);
+	}
+
+	.aging-note[hidden] {
+		display: none;
+	}
+</style>
