@@ -1,6 +1,7 @@
 export interface SiteConfig {
 	author: string;
 	email: string;
+	goatcounter: string;
 	date: {
 		locale: string | string[] | undefined;
 		options: Intl.DateTimeFormatOptions;

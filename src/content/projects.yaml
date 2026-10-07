@@ -26,6 +26,7 @@
   summary: A three-layer, Hyrule-inspired map for deep technical study, starting with HPC. You clear shrines by committing a small build and a write-up, and the map is rendered from the repo.
   hard: Keeping the repository as the only source of truth, with no database or browser storage, while rendering a 217-entry, 22-region world as an explorable map.
   repo: https://github.com/t-flora/stratum
+  url: https://t-flora.github.io/stratum/
   stack: [TypeScript, Svelte 5, D3]
   tags: [learning, hpc]
 

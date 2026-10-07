@@ -71,3 +71,15 @@ const socialImageURL = new URL(ogImage ? ogImage : "/social-card.png", Astro.url
 <link href="/rss.xml" rel="alternate" title={siteConfig.title} type="application/rss+xml" />
 
 <meta content={Astro.generator} name="generator" />
+
+{/* Privacy-friendly analytics (no cookies); production builds only. */}
+{
+	import.meta.env.PROD && siteConfig.goatcounter && (
+		<script
+			async
+			data-goatcounter={`https://${siteConfig.goatcounter}.goatcounter.com/count`}
+			is:inline
+			src="//gc.zgo.at/count.js"
+		/>
+	)
+}
