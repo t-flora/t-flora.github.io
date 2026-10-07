@@ -27,4 +27,3 @@ Things only you can do. Delete lines as you finish them.
 
 - [ ] Link the Explainers (model-intelligence, game-of-intelligent-life) once they're presentable.
 - [ ] Revisit the accent color (currently rust; alternatives: oxblood, deep green, ink blue).
-- [ ] Decide on analytics (see the conversation; options are GoatCounter or Cloudflare Web Analytics).

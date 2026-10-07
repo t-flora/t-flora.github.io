@@ -7,7 +7,7 @@ export const siteConfig: SiteConfig = {
 	// Shown (obfuscated) in the footer.
 	email: "tiagomflora@gmail.com",
 	// GoatCounter site code (the "<code>" in <code>.goatcounter.com). Empty disables analytics.
-	goatcounter: "",
+	goatcounter: "tflora",
 	// Date.prototype.toLocaleDateString() parameters, found in src/utils/date.ts.
 	date: {
 		locale: "en-US",
