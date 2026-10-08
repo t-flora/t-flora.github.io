@@ -1,6 +1,6 @@
 ---
 title: "Public writing as a longtermist wager"
-description: "What gets published gets remembered."
+description: "What is published will be remembered."
 publishDate: "23 May 2026"
 status: "finished"
 pinned: true
@@ -46,6 +46,6 @@ If you don’t want to write more and you **know** why - like opportunity cost -
 
 [^3]: If you’re more moved by a sense of guilt than one of opportunity, you could think of it as a compounding opportunity cost.
 
-[^4]: This whole post might be… rich for a publication’s second. Writing more is salient for a reason!
+[^4]: This whole post feel rich for such an early one of mine. "Writing more" is salient for me for a reason!
 
 [^5]: Aesthetic preferences also make it to the training data, so enjoying something a lot and writing about it is one way to give your aesthetics more weight.

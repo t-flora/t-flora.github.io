@@ -1,5 +1,5 @@
 ---
-title: "Why I made the questionable decision to join a 'startup' university: My options"
+title: "Why I made the questionable decision to join a 'startup' university: the options"
 description: "You may not know your opportunity cost"
 publishDate: "14 May 2025"
 tags: ["education"]
@@ -40,10 +40,17 @@ The Ivy League stamp didn't mean much to me when in high school. So I was surpri
 
 It was distateful. Lots of humble-bragging, lots of dunking on Cornell, and an amount of elitism to which I was not used. A tad annoying, but no deal-breaker for most. Facebook was my window into UPenn's vibes, however unrepresentatively abhorrent a window it may be.
 
-FGV was a more positive and upbeat place by comparison. The economics class was small, only ~70 students would enroll and less than half would graduate. I was invited to a conversation with the EESP dean, and talked to a couple of students before enrolling. Despite the small class size, economics students still managed to win all the inter-departmental semester competitions and were overrepresented as student org leadership. Alumni spoke highly of the program and the network and had relatively prosperous careers, mostly in finance. The researchers were reliably some of the most cited economists in Brazil, as FGV is a relatively rare bastion of orthodox neoclassical economics in the country.
+FGV was a more positive and upbeat place by comparison. The economics class was small, only ~70 students would enroll and less than half would graduate.[^1] I was invited to a conversation with the EESP dean, and talked to a couple of students before enrolling. Despite the small class size, economics students still managed to win all the inter-departmental semester competitions and were overrepresented as student org leadership. Alumni spoke highly of the program and the network and had relatively prosperous careers, mostly in finance. The researchers were reliably some of the most cited economists in Brazil, as FGV is a relatively rare bastion of orthodox neoclassical economics in the country.
 
 As for Minerva, I relied on Ascent - the weekend for admitted students. Minerva covered most of the cost of attendance including airfare. There were people from all over the world huddled together in one dorm. Some students had directed marketing campaigns at Apple as interns, others had worked on movies, one wrote and recited an impressively long poem about a past crush as his personal talk. The density of diversity was astonishing, especially for a relative bumpkin like me.
 
 Enter Ben Nelson. The cofounder, who was Minerva University's de-facto chairman for its first 8-odd years, loved dunking on <i>all</i> traditional and elite schools. During the weekend, he told tales of students who exaggerated summer research projects and got into Princeton, because "[Princeton] don't care at all" about the claims applicants make. Those students didn't survive Minerva's background checks, we were told. Could this place really be as selective as top universities?
 
 Students from all walks of life, passionate founder, somewhat-tangible "culture of inquiry." All in San Francisco, which helped soak the picture in sunshine and fashionable fog. Ascent was effective: it gave any attendant ammunition to turn the natural impression of a scam/cult into a <i>movement</i> you could join.
+
+I must note that the student quality was exceptionally high for the first cohort. M19s, as Minerva's first class is known, is very likely its strongest to this day in terms of personal success. Many of the students are brilliant, and graduated from Minerva because they started out as elite-school admits who got a job at a cool SF startup. It's hard to know how unrepresentative your sample is when it's so small.
+
+<h2>Achieving extraordinary</h2>
+That's Minerva's slogan. I was enthralled by the small class and its international composition, the open-mindedness of the average student, and the seemingly limitless heights one could achieve with just a laptop and a community.
+
+[^1]: And that's why you should let undergrads switch majors without dropping out entirely. But that's a different issue.
