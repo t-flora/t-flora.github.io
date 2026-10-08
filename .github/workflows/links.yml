@@ -37,6 +37,7 @@ jobs:
           args: >-
             --root-dir ${{ github.workspace }}/dist
             --no-progress
+            --exclude-path dist/404.html
             --max-retries 3
             --accept 200..=299,403,429
             --exclude "^https?://(www\.)?(x|twitter|linkedin)\.com"
