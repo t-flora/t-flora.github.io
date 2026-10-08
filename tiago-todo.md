@@ -5,6 +5,7 @@ Things only you can do. Delete lines as you finish them.
 ## Writing
 
 - [ ] Write the pinned AI essay. When it's ready, move `pinned: true` from `public-writing-as-a-longtermist-wager/index.md` to the new post.
+- [ ] After graduating (December 2026), update the status line under your name in `src/pages/index.astro`.
 - [ ] Add home-page "about" details (where, what you do), if you want them. They'd go at the bottom of `src/pages/index.astro`.
 - [ ] Rewrite the "hard part" line for each project in `src/content/projects.yaml`. The current ones are drafted only from the READMEs.
 - [ ] When you reread a post and still stand by it, add `lastReviewed: "<date>"` to its frontmatter. This resets its aging note.

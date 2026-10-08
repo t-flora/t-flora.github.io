@@ -1,6 +1,7 @@
 ---
 import PostPreview from "@/components/blog/PostPreview.astro";
 import { getAllPosts, getUniqueTagsWithCount, groupPostsByYear, sortMDByDate } from "@/data/post";
+import { pageMeta } from "@/data/pages";
 import PageLayout from "@/layouts/Base.astro";
 
 const posts = sortMDByDate(await getAllPosts());
@@ -8,10 +9,7 @@ const tags = getUniqueTagsWithCount(posts).map(([tag]) => tag);
 const byYear = groupPostsByYear(posts);
 const years = Object.keys(byYear).sort((a, b) => +b - +a);
 
-const meta = {
-	description: "Essays, reviews and notes by Tiago Flora",
-	title: "Writing",
-};
+const meta = pageMeta("writing");
 ---
 
 <PageLayout meta={meta}>

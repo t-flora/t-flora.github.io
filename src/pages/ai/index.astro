@@ -4,6 +4,7 @@ import PinCard from "@/components/hubs/PinCard.astro";
 import ProjectList from "@/components/hubs/ProjectList.astro";
 import Timeline from "@/components/hubs/Timeline.astro";
 import { AI_TAG, getProjects, getTimeline, hasTag } from "@/data/hubs";
+import { pageMeta } from "@/data/pages";
 import { getAllPosts, getPinnedPost, sortMDByDate } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 
@@ -13,10 +14,7 @@ const writing = posts.filter((p) => hasTag(p, AI_TAG) && p !== pinned);
 const projects = (await getProjects()).filter((p) => hasTag(p, AI_TAG));
 const timeline = (await getTimeline()).filter((e) => hasTag(e, AI_TAG));
 
-const meta = {
-	description: "Tiago Flora on AI: interpretability, safety, and what we owe the systems we build.",
-	title: "AI",
-};
+const meta = pageMeta("ai");
 ---
 
 <PageLayout meta={meta}>

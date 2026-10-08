@@ -4,6 +4,7 @@ import fs from "node:fs";
 import ProjectList from "@/components/hubs/ProjectList.astro";
 import Timeline from "@/components/hubs/Timeline.astro";
 import { getProjects, getTimeline } from "@/data/hubs";
+import { pageMeta } from "@/data/pages";
 import PageLayout from "@/layouts/Base.astro";
 
 // The resume is only linked once a PDF has been placed at public/resume.pdf.
@@ -11,10 +12,7 @@ const hasResume = fs.existsSync("public/resume.pdf");
 const projects = await getProjects();
 const timeline = await getTimeline();
 
-const meta = {
-	description: "Tiago Flora's work, education and projects.",
-	title: "Work",
-};
+const meta = pageMeta("work");
 ---
 
 <PageLayout meta={meta}>

@@ -3,6 +3,7 @@ import PostPreview from "@/components/blog/PostPreview.astro";
 import PinCard from "@/components/hubs/PinCard.astro";
 import ProjectList from "@/components/hubs/ProjectList.astro";
 import { getProjects } from "@/data/hubs";
+import { pageMeta } from "@/data/pages";
 import { getAllPosts, getPinnedPost, sortMDByDate } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 
@@ -15,8 +16,13 @@ const recent = posts.filter((p) => p !== pinned).slice(0, RECENT_POSTS);
 const projects = (await getProjects()).slice(0, HOME_PROJECTS);
 ---
 
-<PageLayout meta={{ title: "Home" }}>
-	<h1 class="page-title">Tiago Flora</h1>
+<PageLayout meta={pageMeta("home")}>
+	<h1 class="name">Tiago Flora</h1>
+	<!-- Update after graduation (December 2026). -->
+	<p class="status">
+		MS in Financial Mathematics at UChicago, finishing December 2026. Looking for software
+		engineering roles in AI and finance.
+	</p>
 
 	{pinned && <PinCard post={pinned} />}
 
@@ -42,6 +48,15 @@ const projects = (await getProjects()).slice(0, HOME_PROJECTS);
 </PageLayout>
 
 <style>
+	.name {
+		margin-bottom: 0.4rem;
+	}
+
+	.status {
+		margin: 0 0 2.5rem;
+		color: var(--text-muted);
+	}
+
 	.more {
 		margin-top: 1.2rem;
 	}

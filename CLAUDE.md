@@ -10,6 +10,7 @@ Tiago Flora's personal site (Astro 7, deployed to GitHub Pages at t-flora.github
 - `pnpm build` - Type check (`astro check`) + production build; `postbuild` then runs Pagefind automatically
 - `pnpm format` - Prettier
 - `pnpm check` - Astro type checking
+- `pnpm new-post "Title"` - Scaffold `src/content/post/<slug>/index.md` as a draft with today's date
 
 Node >= 22.12 and pnpm 12 (pinned in CI). If the dev server shows stale frontmatter after a schema change, delete `.astro/data-store.json` and restart.
 
@@ -29,11 +30,13 @@ Node >= 22.12 and pnpm 12 (pinned in CI). If the dev server shows stale frontmat
 
 **Client scripts**: link previews (`src/components/LinkPreviews.astro`, own posts + Wikipedia, hover devices only), aging-note re-check, tag chips, search (Pagefind), theme toggle. Keep client scripts from importing `@/utils` or `@/site-config` wholesale; that bundles the site config (including the email) into page JS.
 
-**Generated**: RSS (`/rss.xml`), sitemap, social images (`src/pages/og-image/[slug].png.ts`, Satori).
+**Generated**: RSS (`/rss.xml`), sitemap, social images via Satori (`src/utils/og.ts`): per post at `/og-image/<id>.png`, per top-level page at `/og/<page>.png`. Top-level page titles/descriptions live in `src/data/pages.ts` so `<head>` and the card match.
+
+**CI**: `ci.yml` (check + build on PRs/pushes), `deploy.yml` (GitHub Pages on push to `main`), `links.yml` (weekly lychee link check; opens a "Broken links report" issue instead of failing).
 
 ## Content Workflow
 
-1. New post: `src/content/post/<slug>/index.md` with title, description, publishDate, status.
+1. New post: `pnpm new-post "Title"`, then fill in description and tags; remove `draft: true` to publish.
 2. Publish on the site first, then cross-post to Substack (Busywaiting) and set `substack:` to the Substack URL (ADR 0002).
 3. Rereading a post and standing by it: update `lastReviewed`. Changed your mind: add an `authorNote`.
 4. Swapping the Pin: move `pinned: true` to the new post.
