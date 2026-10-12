@@ -51,4 +51,16 @@ Let's list threats to growth and a decent life that crime bring:
 
 ## Short
 
-Termites ate picture album - what does that imply for record-keeping?
+Lifespans have risen everywhere, but institutional memory is much shorter in developing countries than in developed ones. The collective learning required to build resilient, lasting, and net-positive institutions runs at a snail's pace.
+A trivial example was learning that termites ate a relative's picture album - what does that imply for record-keeping?
+Nature may conspire through heat, fauna, and humidity. Paired with an absence of any measures to fight them, that's formidable. But I'm afraid institutional setups, lack of trust, and lower cognitive capacities mean people are not learning as much as they otherwise would.
+
+The government, far from assuming too little responsibility, is incredibly overbearing. It may _do_ little where it's most needed, as evident in the paltry state of sewage treatment or even collection. But worry not, your neighbor shall not paint his backyard walls without a permit. Your child may not go on a trip without a government-office-verified signature from a parent. There shall be no electric car-induced hazmat fires in your building as there are no EV chargers, because firefighters say they wouldn't be able to put it off (there are naturally many fewer electric cars). Of course the government-approved solutions are much, much more expensive for any developers than reasonability would expect.
+
+If this outsourcing of civil society's responsibilities to the government is everywhere in the West, it is often omnipresent in middle-income countries. This increases feedback loops: the government will not react as quickly as an industry association, much less a single company. Alas, most valuable institutional memory is in private organizations. That memory is the know-how of production and processes, of quirky problems and industry standards set after decades of issues. But companies struggle to live long if they're not government-owned or -favored. Companies that die young do not accumulate institutional memory. If all processes are delayed because of bureaucracy, politics, and poor policy, they are slower to adapt and easier to kill.
+
+
+---
+
+
+From humanity's perspective, underdevelopment looks like a million-dollar cheque left on the table. When you live in it, you understand the cheque is invisible to 90% of the population, is glued to the table, and is often written in an alien language. The cheque is still there, and worth a million dollars. But cashing it in only happens when the table disappears, politicians and constituents obtain cheque-sight glasses, and a wily translator announces their discovery of the contents of this golden piece of paper.
