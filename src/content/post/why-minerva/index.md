@@ -13,13 +13,13 @@ Each of those factoids already require some explanation in polite company. But t
 
 And yet, Minerva was my top choice for undergrad. My 18-year-old self was incredibly naive, but I still believe he made a borderline rational decision. I'm conflicted on whether I'd make the same decision today, and this series of posts aims to help any prospective student to carefully weigh their options. Since I'm trying to expose both my rationale for choosing Minerva <i>and</i> its strengths and weaknesses, I urge you to be alert to my potential biases - especially confirmation and hindsight.
 
-- <a href='../why-minerva-options'>My options</a>
-- <a href='../why-minerva-students'>Minerva students</a>
+- <a href='#my-options'>My options</a>
+- <a href='#minerva-students'>Minerva students</a>
 
 
 Minerva is a product of the early 2010s, and many of its early decisions reflect the startup culture of the time. It seems to be drifting from that vision, for good and ill.
 
-<h2>My options</h2>
+<h2 id="my-options">My options</h2>
 When I graduated high school I had a few options, of which I seriously considered (i) economics at the top economics program in Brazil (Fundação Getulio Vargas, or FGV henceforth), (ii) mathematical economics at UPenn, (iii) and Minerva, which offers 5 majors.
 
 Okay, I lied - I didn't <i>seriously</i> consider UPenn. The amount of financial aid they offered was far too low for me. But I like to think I discarded the Ivy League school for reasons beyond financial strain. We'll get to those.
@@ -67,7 +67,7 @@ That's Minerva's slogan. I was enthralled by the small class and its internation
 
 [^1]: And that's why you should let undergrads switch majors without dropping out entirely. But that's a different issue.
 
-<h2>Minerva students</h2>
+<h2 id="minerva-students">Minerva students</h2>
 
 I graduated from a... peculiar <a href="https://pt.wikipedia.org/wiki/Col%C3%A9gio_Etapa">Brazilian high school</a>. Brazil has terrible statistics on academic achievement across the board, but my high school was an outlier. Its alumni won 8 of the 15 gold IMO medals Brazilians have ever been awarded (8 of the 10 earned since its first in 1998). The ratios are similar for other international STEM competitions. Good friends went to MIT and CMU, acquaintances went to Stanford, Harvard, and so on. The school was not selective; anyone who could afford it or who did well enough in a scholarship exam to afford it could attend, if they passed a minimum reading+math competency exam. The school just had the best resources in the country for students who wanted to excel at olympiads, and some of the best for students who wanted to go abroad.
 

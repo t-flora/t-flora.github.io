@@ -48,8 +48,8 @@ export default defineConfig({
 		"/contact-success": "/",
 		"/tags": "/posts/",
 		// The Minerva series, merged into its first post.
-		"/posts/why-minerva-options": "/posts/why-minerva/",
-		"/posts/why-minerva-students": "/posts/why-minerva/",
+		"/posts/why-minerva-options": "/posts/why-minerva/#my-options",
+		"/posts/why-minerva-students": "/posts/why-minerva/#minerva-students",
 	},
 	markdown: {
 		processor: unified({

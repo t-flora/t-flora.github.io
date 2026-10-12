@@ -34,6 +34,8 @@ const post = defineCollection({
 			ogImage: z.string().optional(),
 			// The one post featured at the top of the AI Hub.
 			pinned: z.boolean().default(false),
+			// Optional line shown next to "Pinned" on the Pin card. None by default.
+			pinNote: z.string().optional(),
 			publishDate: date,
 			status: z.enum(["sketch", "evolving", "finished"]).optional(),
 			// The Substack copy of the post, where discussion happens.

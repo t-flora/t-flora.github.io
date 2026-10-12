@@ -17,7 +17,7 @@ Node >= 22.12 and pnpm 12 (pinned in CI). If the dev server shows stale frontmat
 ## Architecture
 
 **Content** (schemas in `src/content.config.ts`):
-- Posts: `src/content/post/` (folder with `index.md` or a flat `.md`). Required: `title`, `description` (<= 200 chars), `publishDate`. Optional: `status` (sketch | evolving | finished), `lastReviewed`, `pinned` (at most one post; the build fails otherwise), `authorNote`, `substack`, `tags`, `coverImage`, `draft`.
+- Posts: `src/content/post/` (folder with `index.md` or a flat `.md`). Required: `title`, `description` (<= 200 chars), `publishDate`. Optional: `status` (sketch | evolving | finished), `lastReviewed`, `pinned` (at most one post; the build fails otherwise), `pinNote` (optional line beside "Pinned" on the Pin card), `authorNote`, `substack`, `tags`, `coverImage`, `draft`.
 - A placeholder `authorNote` starting with "TODO" fails production builds on purpose.
 - Timeline: `src/content/timeline.yaml`. Projects: `src/content/projects.yaml`.
 - Anything tagged `ai` also appears on the AI Hub (`src/data/hubs.ts`).
