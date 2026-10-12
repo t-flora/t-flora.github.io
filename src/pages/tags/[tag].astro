@@ -3,13 +3,21 @@
 import { getAllPosts, getUniqueTags } from "@/data/post";
 
 export async function getStaticPaths() {
-	// Tags that existed on the old site but have since been renamed.
-	const renamed: Record<string, string> = { essays: "essay", series: "education" };
+	// Tags that existed on the old site but have since been renamed, or dropped (null: all of Writing).
+	const renamed: Record<string, string | null> = {
+		essays: "essay",
+		"low-level": null,
+		series: "education",
+		short: null,
+	};
 	const current = getUniqueTags(await getAllPosts());
-	return [...new Set([...current, ...Object.keys(renamed)])].map((tag) => ({
-		params: { tag },
-		props: { target: `/posts/?tags=${encodeURIComponent(renamed[tag] ?? tag)}` },
-	}));
+	return [...new Set([...current, ...Object.keys(renamed)])].map((tag) => {
+		const to = tag in renamed ? renamed[tag] : tag;
+		return {
+			params: { tag },
+			props: { target: to ? `/posts/?tags=${encodeURIComponent(to)}` : "/posts/" },
+		};
+	});
 }
 
 const { tag } = Astro.params;

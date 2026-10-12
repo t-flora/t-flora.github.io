@@ -47,6 +47,9 @@ export default defineConfig({
 		"/contact": "/",
 		"/contact-success": "/",
 		"/tags": "/posts/",
+		// The Minerva series, merged into its first post.
+		"/posts/why-minerva-options": "/posts/why-minerva/",
+		"/posts/why-minerva-students": "/posts/why-minerva/",
 	},
 	markdown: {
 		processor: unified({

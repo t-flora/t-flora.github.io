@@ -2,7 +2,7 @@
 title: "Writing a short post"
 description: "Regularize your ideas."
 publishDate: "21 Aug 2024"
-tags: ["opinion", "essay", "short", "writing"]
+tags: ["opinion", "essay", "writing"]
 status: "finished"
 draft: false
 ---

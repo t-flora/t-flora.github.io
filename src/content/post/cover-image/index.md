@@ -6,7 +6,7 @@ publishDate: "22 May 2023"
 # coverImage:
 #   src: "./cover.png"
 #   alt: "Astro build wallpaper"
-tags: ["opinion", "low-level"]
+tags: ["opinion"]
 status: "sketch"
 ---
 

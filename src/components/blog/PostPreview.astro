@@ -19,7 +19,6 @@ const { data } = post;
 	</Tag>
 	<p class="meta">
 		<FormattedDate date={data.publishDate} />
-		{data.status && <span>{data.status}</span>}
 		{data.draft && <span class="draft">draft</span>}
 	</p>
 	{withDesc && data.description && <p class="desc">{data.description}</p>}

@@ -12,9 +12,7 @@ const { data } = post;
 ---
 
 <section aria-labelledby="pin-title" class="pin">
-	<p class="meta pin-label">
-		Pinned <span class="muted">· what I'd point you to now, not a final word</span>
-	</p>
+	<p class="meta pin-label">Pinned</p>
 	<h2 id="pin-title">
 		<a href={`/posts/${post.id}/`}>{data.title}</a>
 	</h2>
@@ -28,7 +26,6 @@ const { data } = post;
 				</span>
 			)
 		}
-		{data.status && <span>Status: {data.status}</span>}
 	</p>
 </section>
 
