@@ -1,0 +1,65 @@
+---
+// Five stars, filled to the nearest quarter. The filled row sits on top of the empty
+// row and is cut off at the rating, so partial stars need no per-star clip paths.
+interface Props {
+	value: number;
+}
+
+const { value } = Astro.props;
+const star =
+	"M12 2.5l2.94 5.96 6.58.96-4.76 4.64 1.12 6.55L12 17.52l-5.88 3.09 1.12-6.55L2.48 9.42l6.58-.96z";
+// The star's ink runs from x = 2.48 to 21.52 of 24, so a quarter star is a quarter of
+// the ink, not of the box.
+const [inkStart, inkEnd] = [2.48, 21.52];
+const whole = Math.floor(value);
+const fraction = value - whole;
+const partial = fraction ? (inkStart + fraction * (inkEnd - inkStart)) / 24 : 0;
+// Each star is 1em wide with a gap after it; see --gap below.
+const fillWidth = `calc(${whole} * (1em + var(--gap)) + ${partial.toFixed(3)}em)`;
+const label = `Rated ${value} out of 5`;
+---
+
+<span aria-label={label} class="rating" role="img" title={label}>
+	<span aria-hidden="true" class="row empty">
+		{Array.from({ length: 5 }, () => <svg viewBox="0 0 24 24"><path d={star} /></svg>)}
+	</span>
+	<span aria-hidden="true" class="row filled" style={`width: ${fillWidth}`}>
+		{Array.from({ length: 5 }, () => <svg viewBox="0 0 24 24"><path d={star} /></svg>)}
+	</span>
+</span>
+
+<style>
+	.rating {
+		--gap: 0.12em;
+		position: relative;
+		display: inline-block;
+		font-size: 1.1em;
+		line-height: 1;
+		vertical-align: -0.12em;
+	}
+
+	.row {
+		display: flex;
+		gap: var(--gap);
+	}
+
+	.filled {
+		position: absolute;
+		inset: 0 auto 0 0;
+		overflow: hidden;
+	}
+
+	svg {
+		flex: none;
+		width: 1em;
+		height: 1em;
+	}
+
+	.empty {
+		fill: var(--link-underline);
+	}
+
+	.filled {
+		fill: var(--accent);
+	}
+</style>

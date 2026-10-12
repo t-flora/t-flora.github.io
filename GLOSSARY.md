@@ -20,6 +20,10 @@ _Avoid_: Manifesto, flagship essay
 How finished a published Post is: sketch, evolving, or finished. Shown with the dates under the title.
 _Avoid_: Draft (reserved for unpublished Posts), maturity
 
+**Rating**:
+A score out of 5, in quarter stars, on a book review Post. Shown as stars with the dates under the title.
+_Avoid_: Score, grade
+
 **Draft**:
 A Post that exists in the repo but is not published.
 _Avoid_: Unpublished, hidden

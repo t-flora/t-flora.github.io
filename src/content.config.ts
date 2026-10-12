@@ -37,6 +37,8 @@ const post = defineCollection({
 			// Optional line shown next to "Pinned" on the Pin card. None by default.
 			pinNote: z.string().optional(),
 			publishDate: date,
+			// Out of 5, in quarter stars (e.g. 3.25). Meant for book reviews.
+			rating: z.number().min(0).max(5).multipleOf(0.25).optional(),
 			status: z.enum(["sketch", "evolving", "finished"]).optional(),
 			// The Substack copy of the post, where discussion happens.
 			substack: z.url().optional(),
