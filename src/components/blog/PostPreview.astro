@@ -3,13 +3,15 @@ import type { HTMLTag, Polymorphic } from "astro/types";
 import type { CollectionEntry } from "astro:content";
 
 import FormattedDate from "../FormattedDate.astro";
+import Rating from "./Rating.astro";
 
 type Props<Tag extends HTMLTag> = {
 	post: CollectionEntry<"post">;
 	withDesc?: boolean;
+	withRating?: boolean;
 } & Polymorphic<{ as: Tag }>;
 
-const { as: Tag = "div", post, withDesc = false } = Astro.props;
+const { as: Tag = "div", post, withDesc = false, withRating = false } = Astro.props;
 const { data } = post;
 ---
 
@@ -19,6 +21,7 @@ const { data } = post;
 	</Tag>
 	<p class="meta">
 		<FormattedDate date={data.publishDate} />
+		{withRating && data.rating !== undefined && <Rating value={data.rating} />}
 		{data.draft && <span class="draft">draft</span>}
 	</p>
 	{withDesc && data.description && <p class="desc">{data.description}</p>}

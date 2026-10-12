@@ -42,7 +42,7 @@ const meta = pageMeta("writing");
 				<ul class="post-list">
 					{byYear[year]!.map((p) => (
 						<li data-tags={p.data.tags.join(" ")}>
-							<PostPreview as="h3" post={p} withDesc />
+							<PostPreview as="h3" post={p} withDesc withRating />
 						</li>
 					))}
 				</ul>
