@@ -3,7 +3,10 @@ import { type CollectionEntry, render } from "astro:content";
 
 import LinkPreviews from "@/components/LinkPreviews.astro";
 import PostHeader from "@/components/blog/PostHeader.astro";
+import ReadingStrip from "@/components/blog/ReadingStrip.astro";
 import TOC from "@/components/blog/TOC.astro";
+import { getReadingMinutes } from "@/data/post";
+import { generateToc } from "@/utils";
 
 import BaseLayout from "./Base.astro";
 
@@ -19,12 +22,20 @@ const {
 const socialImage = ogImage ?? `/og-image/${id}.png`;
 const articleDate = (lastReviewed ?? publishDate).toISOString();
 const { headings } = await render(post);
+// The footnotes' "Notes" heading isn't a section, and wide screens hide it behind sidenotes.
+const toc = generateToc(
+	headings.filter((h) => h.slug !== "footnote-label"),
+	{ maxHeadingLevel: 3 },
+);
+// Short posts don't need a table of contents.
+const showToc = toc.length >= 3;
 ---
 
 <BaseLayout meta={{ articleDate, description, ogImage: socialImage, title }}>
+	<ReadingStrip minutes={getReadingMinutes(post)} title={title} toc={showToc ? toc : []} />
 	<article data-pagefind-body>
 		<PostHeader post={post} />
-		<TOC headings={headings} />
+		{showToc && <TOC toc={toc} />}
 		<div class="prose" data-link-previews>
 			<slot />
 		</div>
@@ -40,6 +51,11 @@ const { headings } = await render(post);
 </BaseLayout>
 
 <style>
+	/* The contents rail (TOC.astro) hangs off the article's edges. */
+	article {
+		position: relative;
+	}
+
 	.discuss {
 		margin-top: 3rem;
 	}

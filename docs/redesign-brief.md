@@ -22,6 +22,7 @@ Outcome of the grill-with-docs session (Sep 30 – Oct 5, 2026). Terms are defin
 
 - Under the title: publish date, Last reviewed date, Status (sketch · evolving · finished). No confidence field for now.
 - Aging note appears automatically when Last reviewed is more than about 12 months old.
+- Added Oct 2026, after felixrieseberg.com: reading time beside the dates; a Reading strip with progress, current section and minutes left; a Contents rail in the margin for Posts with three or more sections (ADR 0004).
 - Optional cover image, used on post cards and as the social preview; otherwise a generated card in the new style.
 - The Pin is set with one line in a Post's frontmatter.
 - Drafts stay in the repo, unpublished.

@@ -40,6 +40,14 @@ _Avoid_: Updated date, modified date
 A quiet notice shown automatically on a Post whose Last reviewed date is more than about a year old, saying the author's views may have moved.
 _Avoid_: Disclaimer, warning
 
+**Contents rail**:
+The list of a Post's sections that stays in view in the margin on wide screens, marking the section being read. Takes the right margin unless the Post has sidenotes, then the left (ADR 0004). Narrower screens show the same list as a collapsible Contents block. Only Posts with at least three sections have one.
+_Avoid_: Sidebar, TOC (fine in code)
+
+**Reading strip**:
+The slim bar that slides in at the top of a Post once its title scrolls away: a link back to Writing, the title, the current section (which opens the contents), minutes left, and a progress line along its bottom edge.
+_Avoid_: Header, navbar, progress bar (that's only its bottom edge)
+
 **Timeline**:
 An editable, chronological record of work, education and other experiences shown on the Work Hub. Includes things that never make it onto the resume.
 _Avoid_: CV, experience section

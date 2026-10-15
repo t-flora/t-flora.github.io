@@ -1,0 +1,334 @@
+---
+import type { TocItem } from "@/utils";
+
+import TocList from "./TocList.astro";
+
+interface Props {
+	minutes: number;
+	title: string;
+	toc: TocItem[];
+}
+
+const { minutes, title, toc } = Astro.props;
+const hasToc = toc.length > 0;
+---
+
+<!-- Slides in once the post's title scrolls away: back link, title, current section (which opens
+     the contents) and minutes left, with reading progress along the bottom edge. -->
+<div class="strip" data-minutes={minutes} data-pagefind-ignore data-reading-strip>
+	<div class="strip-inner meta">
+		<a class="back" href="/posts/">
+			← Writing
+		</a>
+		<span class="title">{title}</span>
+		{hasToc && (
+			<button
+				aria-controls="strip-toc"
+				aria-expanded="false"
+				class="section"
+				data-strip-section
+				type="button"
+			>
+				<span data-strip-section-label>Contents</span>
+			</button>
+		)}
+		<span class="left" data-strip-left>
+			{minutes} min left
+		</span>
+		{hasToc && (
+			<nav aria-label="Contents" class="menu" data-toc hidden id="strip-toc">
+				<TocList toc={toc} />
+			</nav>
+		)}
+	</div>
+	<div aria-hidden="true" class="bar" data-strip-bar></div>
+</div>
+
+<script>
+	const strip = document.querySelector<HTMLElement>("[data-reading-strip]");
+	const prose = document.querySelector<HTMLElement>("article .prose");
+
+	if (strip && prose) {
+		const title = document.querySelector<HTMLElement>("article h1");
+		const bar = strip.querySelector<HTMLElement>("[data-strip-bar]")!;
+		const left = strip.querySelector<HTMLElement>("[data-strip-left]")!;
+		const sectionButton = strip.querySelector<HTMLButtonElement>("[data-strip-section]");
+		const sectionLabel = strip.querySelector<HTMLElement>("[data-strip-section-label]");
+		const menu = strip.querySelector<HTMLElement>("#strip-toc");
+		const rail = document.querySelector<HTMLElement>(".toc-rail .rail");
+		const minutes = Number(strip.dataset.minutes);
+
+		// Every contents list on the page (rail, strip menu, inline block) links to the same headings.
+		const links = [...document.querySelectorAll<HTMLAnchorElement>("[data-toc] a")];
+		const headings = [...new Set(links.map((a) => decodeURIComponent(a.hash.slice(1))))]
+			.map((id) => document.getElementById(id))
+			.filter((h): h is HTMLElement => h !== null);
+		const topIds = new Set(
+			links
+				.filter((a) => a.hasAttribute("data-top"))
+				.map((a) => decodeURIComponent(a.hash.slice(1))),
+		);
+
+		const lastWhere = <T,>(items: T[], test: (item: T) => boolean) => {
+			for (let i = items.length - 1; i >= 0; i--) if (test(items[i]!)) return items[i];
+			return undefined;
+		};
+
+		// A heading counts as reached once it passes a line 30% down the screen.
+		const readingLine = () => innerHeight * 0.3;
+
+		let current: HTMLElement | undefined;
+
+		function setCurrent(heading: HTMLElement | undefined) {
+			if (heading === current) return;
+			current = heading;
+			const id = heading?.id;
+			for (const a of links) {
+				if (decodeURIComponent(a.hash.slice(1)) === id) a.setAttribute("aria-current", "location");
+				else a.removeAttribute("aria-current");
+			}
+			if (sectionLabel) {
+				const reached = headings.slice(0, heading ? headings.indexOf(heading) + 1 : 0);
+				const top = lastWhere(reached, (h) => topIds.has(h.id));
+				sectionLabel.textContent = top?.textContent?.trim() || "Contents";
+			}
+			// Keep the current entry in view when the rail's list is taller than the screen.
+			const active = rail?.querySelector<HTMLElement>("a[aria-current]");
+			if (rail && active && rail.scrollHeight > rail.clientHeight) {
+				const top =
+					active.getBoundingClientRect().top - rail.getBoundingClientRect().top + rail.scrollTop;
+				if (top < rail.scrollTop + 24) rail.scrollTop = top - 24;
+				else if (top + active.offsetHeight > rail.scrollTop + rail.clientHeight - 24)
+					rail.scrollTop = top + active.offsetHeight - rail.clientHeight + 24;
+			}
+		}
+
+		function update() {
+			const line = readingLine();
+			const box = prose!.getBoundingClientRect();
+			const maxScroll = document.documentElement.scrollHeight - innerHeight;
+			// Progress runs from the first line of the post reaching the reading line to its last
+			// line reaching the bottom of the screen (or the page running out of scroll).
+			const start = scrollY + box.top - line;
+			const end = Math.min(scrollY + box.bottom - innerHeight, maxScroll);
+			const progress = Math.min(1, Math.max(0, (scrollY - start) / Math.max(1, end - start)));
+
+			bar.style.transform = `scaleX(${progress})`;
+			left.textContent =
+				progress > 0.99 ? "Done" : `${Math.max(1, Math.ceil(minutes * (1 - progress)))} min left`;
+
+			const shown = (title?.getBoundingClientRect().bottom ?? box.top) < 0;
+			strip!.toggleAttribute("data-shown", shown);
+			if (!shown) closeMenu();
+
+			// At the very end, the last headings may never reach the line; count them as reached.
+			const atEnd = scrollY >= maxScroll - 2;
+			setCurrent(
+				atEnd ? headings.at(-1) : lastWhere(headings, (h) => h.getBoundingClientRect().top < line),
+			);
+		}
+
+		let queued = false;
+		function schedule() {
+			if (queued) return;
+			queued = true;
+			requestAnimationFrame(() => {
+				queued = false;
+				update();
+			});
+		}
+
+		function closeMenu() {
+			if (!menu || menu.hidden) return;
+			menu.hidden = true;
+			sectionButton?.setAttribute("aria-expanded", "false");
+		}
+
+		sectionButton?.addEventListener("click", () => {
+			if (!menu) return;
+			menu.hidden = !menu.hidden;
+			sectionButton.setAttribute("aria-expanded", String(!menu.hidden));
+			if (!menu.hidden)
+				(menu.querySelector<HTMLElement>("a[aria-current]") ?? menu.querySelector("a"))?.focus();
+		});
+		menu?.addEventListener("click", (e) => {
+			if ((e.target as Element).closest("a")) closeMenu();
+		});
+		document.addEventListener("click", (e) => {
+			if (!strip.contains(e.target as Node)) closeMenu();
+		});
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "Escape" && menu && !menu.hidden) {
+				closeMenu();
+				sectionButton?.focus();
+			}
+		});
+
+		addEventListener("scroll", schedule, { passive: true });
+		addEventListener("resize", schedule);
+		update();
+	}
+</script>
+
+<style>
+	.strip {
+		position: fixed;
+		inset: 0 0 auto;
+		z-index: 40;
+		background: var(--bg);
+		border-bottom: 1px solid var(--rule);
+		transform: translateY(-100%);
+		visibility: hidden;
+		transition:
+			transform 180ms ease,
+			visibility 180ms;
+	}
+
+	.strip[data-shown] {
+		transform: none;
+		visibility: visible;
+	}
+
+	/* Lines up with the reading column, including the room kept for margins. */
+	.strip-inner {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 1.2rem;
+		height: var(--strip-height);
+		max-width: calc(
+			var(--measure) + var(--frame-extra-start) + var(--frame-extra) + 2 * var(--page-padding)
+		);
+		margin: 0 auto;
+		padding: 0 calc(var(--frame-extra) + var(--page-padding)) 0
+			calc(var(--frame-extra-start) + var(--page-padding));
+		white-space: nowrap;
+	}
+
+	.back {
+		color: var(--accent);
+	}
+
+	.title {
+		flex: 1;
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		color: var(--text);
+	}
+
+	.section {
+		display: flex;
+		min-width: 0;
+		max-width: 16rem;
+		padding: 0.2rem 0;
+		border: 0;
+		background: none;
+		color: inherit;
+		font: inherit;
+		letter-spacing: inherit;
+		cursor: pointer;
+	}
+
+	.section > span {
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.section::after {
+		content: "▾";
+		margin-inline-start: 0.35em;
+	}
+
+	.section:hover,
+	.section[aria-expanded="true"] {
+		color: var(--text);
+	}
+
+	.left {
+		min-width: 5.5em;
+		text-align: end;
+	}
+
+	.bar {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -1px;
+		height: 2px;
+		background: var(--accent);
+		transform: scaleX(0);
+		transform-origin: left;
+	}
+
+	.menu {
+		position: absolute;
+		top: calc(100% + 0.4rem);
+		right: calc(var(--frame-extra) + var(--page-padding));
+		width: min(22rem, calc(100% - 2 * var(--page-padding)));
+		max-height: 60vh;
+		overflow-y: auto;
+		padding: 0.8rem 1rem;
+		background: var(--bg-raised);
+		border: 1px solid var(--rule);
+		border-radius: 4px;
+		box-shadow: var(--shadow);
+		font-size: 0.88rem;
+		line-height: 1.4;
+		white-space: normal;
+	}
+
+	.menu :global(ol) {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.menu :global(ol ol) {
+		padding-inline-start: 0.9rem;
+	}
+
+	.menu :global(a) {
+		display: block;
+		padding: 0.25rem 0;
+		color: var(--text-muted);
+		text-decoration-color: transparent;
+	}
+
+	.menu :global(a:hover),
+	.menu :global(a[aria-current]) {
+		color: var(--text);
+	}
+
+	.menu :global(a[aria-current])::before {
+		content: "";
+		display: inline-block;
+		width: 0.35em;
+		height: 0.35em;
+		margin: 0 0.45em 0.15em -0.8em;
+		border-radius: 50%;
+		background: var(--accent);
+	}
+
+	/* Phones: no room for the title; the section label takes the space instead. */
+	@media (max-width: 47.99rem) {
+		.title {
+			display: none;
+		}
+
+		.section {
+			flex: 1;
+			max-width: none;
+		}
+
+		.left {
+			margin-inline-start: auto;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.strip {
+			transition: none;
+		}
+	}
+</style>

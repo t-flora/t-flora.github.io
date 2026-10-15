@@ -32,6 +32,16 @@ export function isAging(post: CollectionEntry<"post">, now = new Date()) {
 	return now.valueOf() - getReviewBaseline(post).valueOf() > AGING_THRESHOLD_MS;
 }
 
+/** estimated reading time in whole minutes, at about 230 words a minute */
+export function getReadingMinutes(post: CollectionEntry<"post">) {
+	const text = (post.body ?? "")
+		.replace(/```[\s\S]*?```/g, " ") // code blocks
+		.replace(/<[^>]+>/g, " ") // inline HTML
+		.replace(/\]\([^)]*\)/g, "]"); // link targets
+	const words = text.match(/[\p{L}\p{N}][\p{L}\p{N}'’-]*/gu)?.length ?? 0;
+	return Math.max(1, Math.round(words / 230));
+}
+
 /** the currently pinned post, if any; fails the build if more than one is pinned */
 export function getPinnedPost(posts: CollectionEntry<"post">[]) {
 	const pinned = posts.filter((p) => p.data.pinned);

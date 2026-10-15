@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Tiago Flora's personal site (Astro 7, deployed to GitHub Pages at t-flora.github.io). Read `GLOSSARY.md` for the site's vocabulary (Hub, Pin, Status, Draft, Last reviewed, Aging note, Author's note, Timeline, Project, Explainer, Tag) and `docs/adr/` for decisions that shouldn't be silently reversed. `docs/redesign-brief.md` is the design brief.
+Tiago Flora's personal site (Astro 7, deployed to GitHub Pages at t-flora.github.io). Read `GLOSSARY.md` for the site's vocabulary (Hub, Pin, Status, Draft, Last reviewed, Aging note, Author's note, Timeline, Project, Explainer, Tag, Contents rail, Reading strip) and `docs/adr/` for decisions that shouldn't be silently reversed. `docs/redesign-brief.md` is the design brief.
 
 ## Development Commands
 
@@ -21,6 +21,7 @@ Node >= 22.12 and pnpm 12 (pinned in CI). If the dev server shows stale frontmat
 - A placeholder `authorNote` starting with "TODO" fails production builds on purpose.
 - Timeline: `src/content/timeline.yaml`. Projects: `src/content/projects.yaml`.
 - Anything tagged `ai` also appears on the AI Hub (`src/data/hubs.ts`).
+- Posts with 3+ sections (h2s; the footnotes' "Notes" heading doesn't count) get a Contents rail and a section menu in the Reading strip; see "Post reading aids" below. Reading time ("N min read") is computed from the body by `getReadingMinutes` in `src/data/post.ts`.
 
 **Pages**: `/` (Pin, recent writing, projects), `/ai/` and `/work/` (Hubs), `/posts/` (all writing with multi-select tag chips, filter state in `?tags=`), `/projects/`, `/posts/<id>/`. Old URLs (`/about/`, `/contact/`, `/tags/...`) redirect via `astro.config.ts` and `src/pages/tags/[tag].astro`.
 
@@ -28,7 +29,9 @@ Node >= 22.12 and pnpm 12 (pinned in CI). If the dev server shows stale frontmat
 
 **Styling**: plain CSS, no Tailwind (ADR 0003). Tokens and prose styles in `src/styles/global.css`; components use scoped `<style>`. Light/dark via `data-theme` on `<html>` (ThemeProvider/ThemeToggle). Source Serif 4 is self-hosted through Astro's `fonts` config with preload.
 
-**Client scripts**: link previews (`src/components/LinkPreviews.astro`, own posts + Wikipedia, hover devices only), aging-note re-check, tag chips, search (Pagefind), theme toggle. Keep client scripts from importing `@/utils` or `@/site-config` wholesale; that bundles the site config (including the email) into page JS.
+**Post reading aids** (ADR 0004): `src/layouts/BlogPost.astro` builds the table of contents once and passes it to `TOC.astro` (inline Contents block + Contents rail) and `ReadingStrip.astro`; both render `TocList.astro`. The right margin belongs to sidenotes: the rail takes it only on posts without them (>= 72rem) and otherwise moves left (>= 82rem). Margin room is reserved through `--frame-extra` (right) and `--frame-extra-start` (left) in `global.css`; `main`, the header, the footer and the strip all pad by both, so anything new that should line up with the reading column must too. Headings clear the strip via `--strip-height`.
+
+**Client scripts**: link previews (`src/components/LinkPreviews.astro`, own posts + Wikipedia, hover devices only), aging-note re-check, reading strip (`src/components/blog/ReadingStrip.astro`: progress bar, current section, minutes left; also highlights the contents rail), tag chips, search (Pagefind), theme toggle. Keep client scripts from importing `@/utils` or `@/site-config` wholesale; that bundles the site config (including the email) into page JS.
 
 **Generated**: RSS (`/rss.xml`), sitemap, social images via Satori (`src/utils/og.ts`): per post at `/og-image/<id>.png`, per top-level page at `/og/<page>.png`. Top-level page titles/descriptions live in `src/data/pages.ts` so `<head>` and the card match.
 

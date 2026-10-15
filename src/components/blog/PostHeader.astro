@@ -3,7 +3,7 @@ import type { CollectionEntry } from "astro:content";
 
 import { Image } from "astro:assets";
 
-import { getReviewBaseline, isAging } from "@/data/post";
+import { getReadingMinutes, getReviewBaseline, isAging } from "@/data/post";
 
 import FormattedDate from "../FormattedDate.astro";
 import Rating from "./Rating.astro";
@@ -47,6 +47,7 @@ const agingNote = data.lastReviewed
 			)
 		}
 		{data.status && <span>Status: {data.status}</span>}
+		<span>{getReadingMinutes(post)} min read</span>
 		{data.rating !== undefined && <Rating value={data.rating} />}
 	</p>
 	{

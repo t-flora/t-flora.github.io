@@ -26,14 +26,19 @@
 }
 
 :root {
-	/* Extra room reserved on the right for margin notes; set on wide screens when a page has them. */
+	/* Extra room reserved on the right for margin notes (or the contents rail), and on the left for
+	   the rail when margin notes have the right; set on wide screens when a page has them. */
 	--frame-extra: 0rem;
+	--frame-extra-start: 0rem;
 	/* --font-source-serif is defined by Astro's fonts config (see astro.config.ts). */
 	--font-serif: var(--font-source-serif);
 	--font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 	--measure: 38rem;
 	--sidenote-width: 14rem;
 	--sidenote-gap: 2.5rem;
+	--toc-start-width: 12rem;
+	/* Height of the reading strip on posts; anchors and the rail clear it. */
+	--strip-height: 2.5rem;
 	--page-padding: 1.25rem;
 }
 
@@ -75,9 +80,12 @@ body {
 main {
 	flex: 1;
 	width: 100%;
-	max-width: calc(var(--measure) + var(--frame-extra) + 2 * var(--page-padding));
+	max-width: calc(
+		var(--measure) + var(--frame-extra-start) + var(--frame-extra) + 2 * var(--page-padding)
+	);
 	margin-inline: auto;
-	padding: 0 calc(var(--frame-extra) + var(--page-padding)) 4rem var(--page-padding);
+	padding: 0 calc(var(--frame-extra) + var(--page-padding)) 4rem
+		calc(var(--frame-extra-start) + var(--page-padding));
 }
 
 a {
@@ -298,9 +306,9 @@ img {
 	font-size: 1.05em;
 }
 
-/* Heading anchors are added by Astro as ids; give targets breathing room. */
-.prose :target {
-	scroll-margin-top: 2rem;
+/* Heading anchors are added by Astro as ids; give targets room below the reading strip. */
+.prose [id] {
+	scroll-margin-top: calc(var(--strip-height) + 1.5rem);
 }
 
 /* ---------- Sidenotes ----------
@@ -390,6 +398,23 @@ sup {
 		overflow: hidden;
 		clip: rect(0, 0, 0, 0);
 		border: 0;
+	}
+}
+
+/* ---------- Contents rail ----------
+   Posts with a table of contents get a sticky rail in the margin (TOC.astro). Without sidenotes
+   it takes the sidenote column on the right; with them it moves left, once there's room for both.
+   Narrower screens keep the inline Contents block. */
+
+@media (min-width: 72rem) {
+	body:has(.toc-rail) {
+		--frame-extra: calc(var(--sidenote-width) + var(--sidenote-gap));
+	}
+}
+
+@media (min-width: 82rem) {
+	body:has(.toc-rail):has(.prose .sidenote) {
+		--frame-extra-start: calc(var(--toc-start-width) + var(--sidenote-gap));
 	}
 }
 

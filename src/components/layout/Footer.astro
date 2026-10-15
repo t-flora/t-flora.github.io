@@ -36,9 +36,9 @@ const reversedEmail = [...siteConfig.email].reverse().join("");
 		gap: 0.5rem 1.5rem;
 		/* Border spans the text column only, not the page padding. */
 		width: calc(100% - 2 * var(--page-padding));
-		max-width: calc(var(--measure) + var(--frame-extra));
+		max-width: calc(var(--measure) + var(--frame-extra-start) + var(--frame-extra));
 		margin: 0 auto;
-		padding: 2rem var(--frame-extra) 2.5rem 0;
+		padding: 2rem var(--frame-extra) 2.5rem var(--frame-extra-start);
 		border-top: 1px solid var(--rule);
 	}
 

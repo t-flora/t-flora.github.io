@@ -1,38 +1,27 @@
 ---
-import type { MarkdownHeading } from "astro";
+import type { TocItem } from "@/utils";
 
-import { generateToc, type TocItem } from "@/utils";
+import TocList from "./TocList.astro";
 
 interface Props {
-	headings: MarkdownHeading[];
+	toc: TocItem[];
 }
 
-const toc = generateToc(Astro.props.headings, { maxHeadingLevel: 3 });
+const { toc } = Astro.props;
 ---
 
-{
-	toc.length >= 3 && (
-		<details class="toc">
-			<summary class="meta">Contents</summary>
-			<ol>
-				{toc.map((h: TocItem) => (
-					<li>
-						<a href={`#${h.slug}`}>{h.text}</a>
-						{!!h.children.length && (
-							<ol>
-								{h.children.map((c) => (
-									<li>
-										<a href={`#${c.slug}`}>{c.text}</a>
-									</li>
-								))}
-							</ol>
-						)}
-					</li>
-				))}
-			</ol>
-		</details>
-	)
-}
+<details class="toc">
+	<summary class="meta">Contents</summary>
+	<TocList toc={toc} />
+</details>
+<!-- The rail: sticky contents in the margin on wide screens. It takes the right margin, or the
+     left one when sidenotes have the right (see "Contents rail" in global.css). -->
+<nav aria-label="Contents" class="toc-rail" data-pagefind-ignore data-toc>
+	<div class="rail">
+		<p class="rail-title">Contents</p>
+		<TocList toc={toc} />
+	</div>
+</nav>
 
 <style>
 	.toc {
@@ -45,24 +34,108 @@ const toc = generateToc(Astro.props.headings, { maxHeadingLevel: 3 });
 		width: fit-content;
 	}
 
-	ol {
+	.toc :global(ol) {
 		margin: 0.5rem 0 0;
 		padding-inline-start: 1.2rem;
 	}
 
-	ol ol {
+	.toc :global(ol ol) {
 		margin-top: 0.15rem;
 	}
 
-	li + li {
+	.toc :global(li + li) {
 		margin-top: 0.15rem;
 	}
 
-	a {
+	.toc :global(a),
+	.toc-rail :global(a) {
 		text-decoration-color: transparent;
 	}
 
-	a:hover {
+	.toc :global(a:hover) {
 		text-decoration-color: currentColor;
+	}
+
+	.toc-rail {
+		display: none;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: calc(100% + var(--sidenote-gap));
+		width: var(--sidenote-width);
+	}
+
+	:global(article:has(.prose .sidenote)) .toc-rail {
+		left: auto;
+		right: calc(100% + var(--sidenote-gap));
+		width: var(--toc-start-width);
+	}
+
+	.rail {
+		position: sticky;
+		top: calc(var(--strip-height) + 1.5rem);
+		max-height: calc(100vh - var(--strip-height) - 3rem);
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		scrollbar-width: thin;
+		font-size: 0.8rem;
+		line-height: 1.4;
+	}
+
+	.rail-title {
+		margin: 0 0 0.6rem;
+		color: var(--text-muted);
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	.toc-rail :global(ol) {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.toc-rail :global(a) {
+		display: block;
+		padding: 0.2rem 0 0.2rem 0.7rem;
+		border-inline-start: 2px solid var(--rule);
+		color: var(--text-muted);
+		text-wrap: pretty;
+	}
+
+	.toc-rail :global(ol ol a) {
+		padding-inline-start: 1.5rem;
+	}
+
+	.toc-rail :global(a:hover) {
+		color: var(--text);
+	}
+
+	/* Set by ReadingStrip's script as the reader moves through the post. */
+	.toc-rail :global(a[aria-current]) {
+		border-inline-start-color: var(--accent);
+		color: var(--text);
+	}
+
+	@media (min-width: 72rem) {
+		:global(article:not(:has(.prose .sidenote))) .toc {
+			display: none;
+		}
+
+		:global(article:not(:has(.prose .sidenote))) .toc-rail {
+			display: block;
+		}
+	}
+
+	@media (min-width: 82rem) {
+		.toc {
+			display: none;
+		}
+
+		.toc-rail {
+			display: block;
+		}
 	}
 </style>

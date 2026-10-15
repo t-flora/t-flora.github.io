@@ -33,9 +33,12 @@ const isCurrent = (linkPath: string) =>
 		align-items: baseline;
 		gap: 0.4rem 1.6rem;
 		width: 100%;
-		max-width: calc(var(--measure) + var(--frame-extra) + 2 * var(--page-padding));
+		max-width: calc(
+			var(--measure) + var(--frame-extra-start) + var(--frame-extra) + 2 * var(--page-padding)
+		);
 		margin: 0 auto;
-		padding: 2rem calc(var(--frame-extra) + var(--page-padding)) 3rem var(--page-padding);
+		padding: 2rem calc(var(--frame-extra) + var(--page-padding)) 3rem
+			calc(var(--frame-extra-start) + var(--page-padding));
 	}
 
 	.wordmark {
